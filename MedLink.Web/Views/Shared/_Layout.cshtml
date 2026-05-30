@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MedLink</title>
+    <link rel="stylesheet" href="~/css/medlink.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner container-lg">
+            <a asp-controller="Home" asp-action="Index" class="nav-brand">
+                MedLink <span class="brand-dot"></span>
+            </a>
+            <div class="nav-links">
+                <a asp-controller="Home" asp-action="Index">Home</a>
+                <a asp-controller="Home" asp-action="Doctors">Find a Doctor</a>
+                <a asp-controller="Home" asp-action="About">About Us</a>
+                <a asp-controller="Home" asp-action="Contact">Contact</a>
+            </div>
+            <div class="nav-actions">
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <a asp-controller="Appointment" asp-action="Index" class="btn btn-ghost">My Appointments</a>
+                    <a asp-controller="Account" asp-action="Profile" class="nav-user">
+                        <i class="fa-regular fa-circle-user"></i> Profile
+                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/admin" class="btn btn-outline btn-sm">Admin</a>
+                    }
+                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-ghost btn-sm" style="color:var(--accent-coral);">
+                            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a href="/Identity/Account/Login" class="btn btn-ghost">Login</a>
+                    <a href="/Identity/Account/Register" class="btn btn-primary">Sign Up</a>
+                }
+            </div>
+            <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+        </div>
+        <div class="mobile-menu">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Home" asp-action="Doctors">Find a Doctor</a>
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-controller="Appointment" asp-action="Index">My Appointments</a>
+                <a asp-controller="Account" asp-action="Profile">Profile</a>
+            }
+            else
+            {
+                <a href="/Identity/Account/Login">Login</a>
+            }
+        </div>
+    </nav>
+
+    <main role="main">
+        @if (TempData["Success"] != null)
+        {
+            <div class="container mt-4">
+                <div class="alert alert-success">@TempData["Success"]</div>
+            </div>
+        }
+        @if (TempData["Warning"] != null)
+        {
+            <div class="container mt-4">
+                <div class="alert alert-warning">@TempData["Warning"]</div>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="container mt-4">
+                <div class="alert alert-error">@TempData["Error"]</div>
+            </div>
+        }
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">MedLink</div>
+                    <p class="footer-desc">University Health Portal providing seamless access to medical professionals, appointment booking, and digital health records for students and staff.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <a asp-controller="Home" asp-action="Doctors">Find a Doctor</a>
+                    <a asp-controller="Home" asp-action="About">About Us</a>
+                    <a asp-controller="Home" asp-action="Contact">Support</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+                    <a asp-controller="Home" asp-action="Terms">Terms of Service</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; @DateTime.Now.Year MedLink. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

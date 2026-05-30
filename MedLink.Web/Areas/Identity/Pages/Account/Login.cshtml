@@ -1,0 +1,210 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Sign In";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In – MedLink</title>
+    <link rel="stylesheet" href="~/css/medlink.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        html, body { height: 100%; }
+        .auth-wrap {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .auth-panel {
+            background: linear-gradient(145deg, var(--teal-900) 0%, var(--teal-800) 55%, var(--navy-700) 100%);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            padding: 3rem 3.5rem;
+            position: relative; overflow: hidden;
+            color: #fff;
+        }
+        .auth-panel::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(61,189,216,.18) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+        .auth-panel-logo {
+            font-family: var(--font-display);
+            font-size: 1.6rem; font-weight: 700;
+            color: #fff; margin-bottom: 2.5rem;
+            display: flex; align-items: center; gap: 10px;
+            position: relative;
+        }
+        .auth-panel-logo .dot {
+            width: 10px; height: 10px;
+            background: var(--teal-400); border-radius: 50%;
+        }
+        .auth-panel h2 {
+            color: #fff;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            margin-bottom: 1rem; position: relative;
+            line-height: 1.2;
+        }
+        .auth-panel p {
+            color: rgba(255,255,255,.65);
+            font-size: 1rem; max-width: 380px;
+            line-height: 1.7; position: relative;
+        }
+        .auth-features {
+            margin-top: 2.5rem; position: relative;
+            display: flex; flex-direction: column; gap: .9rem;
+        }
+        .auth-feature {
+            display: flex; align-items: center; gap: 12px;
+            font-size: .875rem; color: rgba(255,255,255,.75);
+        }
+        .auth-feature i {
+            width: 34px; height: 34px;
+            background: rgba(255,255,255,.1);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .9rem; color: var(--teal-300);
+            flex-shrink: 0;
+        }
+        .auth-form-wrap {
+            background: var(--ivory);
+            display: flex; align-items: center; justify-content: center;
+            padding: 2.5rem 2rem;
+        }
+        .auth-form-inner {
+            width: 100%; max-width: 400px;
+        }
+        .auth-form-inner h1 {
+            font-size: 1.8rem; margin-bottom: .35rem;
+        }
+        .auth-form-inner .auth-sub {
+            color: var(--muted); font-size: .9rem; margin-bottom: 2rem;
+        }
+        .auth-form-inner .auth-sub a { color: var(--teal-700); font-weight: 600; }
+        .auth-divider {
+            display: flex; align-items: center; gap: 1rem;
+            color: var(--muted); font-size: .8rem; margin: 1.25rem 0;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: ''; flex: 1; height: 1px; background: var(--stone);
+        }
+        .forgot-link {
+            font-size: .8rem; color: var(--teal-700); font-weight: 500;
+        }
+        .input-icon-wrap { position: relative; }
+        .input-icon-wrap .form-control { padding-left: 2.5rem; }
+        .input-icon-wrap .input-icon {
+            position: absolute; left: .85rem; top: 50%; transform: translateY(-50%);
+            color: var(--muted); font-size: .85rem; pointer-events: none;
+        }
+        .show-pass-btn {
+            position: absolute; right: .85rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: var(--muted);
+            cursor: pointer; font-size: .85rem; padding: 2px;
+        }
+        .back-to-site {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: .8rem; color: var(--muted); margin-bottom: 2rem;
+            text-decoration: none; transition: color .2s;
+        }
+        .back-to-site:hover { color: var(--teal-700); }
+        @media (max-width: 768px) {
+            .auth-wrap { grid-template-columns: 1fr; }
+            .auth-panel { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="auth-wrap">
+    <!-- Left decorative panel -->
+    <div class="auth-panel">
+        <div class="auth-panel-logo">
+            MedLink <span class="dot"></span>
+        </div>
+        <h2>Your campus health, at your fingertips.</h2>
+        <p>Sign in to book appointments, access your digital health records, and connect with university medical specialists.</p>
+        <div class="auth-features">
+            <div class="auth-feature">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Book & manage appointments online</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fa-solid fa-file-medical"></i>
+                <span>Secure digital health records</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fa-solid fa-user-doctor"></i>
+                <span>Access to 20+ university specialists</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="auth-form-wrap">
+        <div class="auth-form-inner fade-in">
+            <a href="/" class="back-to-site"><i class="fa-solid fa-arrow-left"></i> Back to portal</a>
+            <h1 class="display">Welcome back</h1>
+            <p class="auth-sub">Don't have an account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create one free</a></p>
+
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-error mb-3" style="display: @(ViewContext.ModelState.IsValid ? "none" : "flex")"></div>
+                <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Input.Email">University Email</label>
+                    <div class="input-icon-wrap">
+                        <i class="input-icon fa-regular fa-envelope"></i>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="you@university.edu" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="d-flex justify-between align-center mb-1">
+                        <label class="form-label mb-0" asp-for="Input.Password">Password</label>
+                        <a class="forgot-link" asp-page="./ForgotPassword">Forgot password?</a>
+                    </div>
+                    <div class="input-icon-wrap">
+                        <i class="input-icon fa-solid fa-lock"></i>
+                        <input asp-for="Input.Password" id="passwordField" class="form-control" autocomplete="current-password" placeholder="••••••••" />
+                        <button type="button" class="show-pass-btn" onclick="togglePassword()">
+                            <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group d-flex align-center gap-1">
+                    <input asp-for="Input.RememberMe" class="form-check-input" type="checkbox" id="rememberMe" style="width:16px;height:16px;accent-color:var(--teal-700);cursor:pointer;" />
+                    <label asp-for="Input.RememberMe" class="form-label mb-0" for="rememberMe" style="cursor:pointer;font-weight:400;">Keep me signed in</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const f = document.getElementById('passwordField');
+        const e = document.getElementById('eyeIcon');
+        if (f.type === 'password') {
+            f.type = 'text';
+            e.className = 'fa-regular fa-eye-slash';
+        } else {
+            f.type = 'password';
+            e.className = 'fa-regular fa-eye';
+        }
+    }
+</script>
+</body>
+</html>

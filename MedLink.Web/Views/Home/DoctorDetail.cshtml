@@ -1,0 +1,82 @@
+@model DoctorDetailViewModel
+@{
+    ViewData["Title"] = Model.Name;
+    bool canBook = ViewBag.CanBook ?? false;
+}
+
+<div class="profile-hero">
+    <div class="container d-flex align-center gap-2 flex-wrap">
+        @if (Model.HasPhoto)
+        {
+            <img src="/Image/Doctor/@Model.Id" class="profile-photo" />
+        }
+        else
+        {
+            <div class="profile-photo">@Model.Name.Substring(0, 1)</div>
+        }
+        <div class="profile-info">
+            <span class="badge badge-teal mb-0">@Model.SpecialtyName</span>
+            <h1 class="display mt-0">@Model.Name</h1>
+            <div class="profile-meta">
+                <div class="profile-meta-item"><i class="fa-solid fa-graduation-cap"></i> @Model.Qualifications</div>
+                <div class="profile-meta-item"><i class="fa-solid fa-briefcase"></i> @Model.ExperienceYears Years Experience</div>
+                <div class="profile-meta-item"><i class="fa-solid fa-star" style="color: #F0A030;"></i> @Model.AverageRating.ToString("0.0") (@Model.ReviewCount Reviews)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container section-sm">
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+        
+        <div>
+            <h3 class="mb-0">About the Doctor</h3>
+            <p class="mt-0">@Model.Bio</p>
+            
+            <h3 class="mt-4 mb-0">Patient Reviews</h3>
+            <hr class="divider" />
+            @if(!Model.Reviews.Any())
+            {
+                <p class="text-muted">No reviews yet.</p>
+            }
+            @foreach(var review in Model.Reviews)
+            {
+                <div class="mb-4">
+                    <div class="d-flex align-center gap-1 mb-0">
+                        <strong class="text-teal">@review.PatientName</strong>
+                        <span class="text-xs text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        @if(review.IsVerified){ <span class="badge badge-green text-xs">Verified Patient</span> }
+                    </div>
+                    <div class="rating mb-0">
+                        @for(int i=1; i<=5; i++)
+                        {
+                            <i class="fa-solid fa-star star @(i <= review.Rating ? "" : "empty")"></i>
+                        }
+                    </div>
+                    <p class="mt-0 text-sm">@review.Comment</p>
+                </div>
+            }
+        </div>
+
+        <div>
+            <div class="card" style="padding: 1.5rem; position: sticky; top: 100px;">
+                <h3>Book Appointment</h3>
+                <div class="d-flex justify-between align-center mb-4">
+                    <span class="text-muted">Consultation Fee</span>
+                    <strong class="doctor-fee" style="font-size: 1.2rem;">Rs. @Model.ConsultationFee</strong>
+                </div>
+
+                @if (canBook)
+                {
+                    <a asp-controller="Appointment" asp-action="Book" asp-route-doctorId="@Model.Id" class="btn btn-primary" style="width:100%; justify-content:center;">Book Now</a>
+                }
+                else
+                {
+                    <div class="alert alert-warning text-sm">You must be logged in to book an appointment.</div>
+                    <a href="/Identity/Account/Login" class="btn btn-outline" style="width:100%; justify-content:center;">Login to Book</a>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

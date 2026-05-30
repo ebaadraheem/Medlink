@@ -1,0 +1,165 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Create Account";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account – MedLink</title>
+    <link rel="stylesheet" href="~/css/medlink.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        html, body { height: 100%; }
+        .auth-wrap {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .auth-panel {
+            background: linear-gradient(145deg, var(--teal-900) 0%, var(--teal-800) 55%, var(--navy-700) 100%);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            padding: 3rem 3.5rem;
+            position: relative; overflow: hidden;
+            color: #fff;
+        }
+        .auth-panel::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(61,189,216,.18) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+        .auth-panel-logo {
+            font-family: var(--font-display);
+            font-size: 1.6rem; font-weight: 700;
+            color: #fff; margin-bottom: 2.5rem;
+            display: flex; align-items: center; gap: 10px;
+            position: relative;
+        }
+        .auth-panel-logo .dot { width:10px;height:10px;background:var(--teal-400);border-radius:50%; }
+        .auth-panel h2 { color:#fff; font-size: clamp(1.8rem,3vw,2.6rem); margin-bottom:1rem; position:relative; line-height:1.2; }
+        .auth-panel p { color:rgba(255,255,255,.65); font-size:1rem; max-width:380px; line-height:1.7; position:relative; }
+        .auth-steps { margin-top:2.5rem; position:relative; display:flex; flex-direction:column; gap:1.1rem; }
+        .auth-step { display:flex; align-items:flex-start; gap:14px; }
+        .step-num { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700; color:var(--teal-300); flex-shrink:0; margin-top:2px; }
+        .step-text { font-size:.875rem; color:rgba(255,255,255,.75); }
+        .step-text strong { color:#fff; display:block; margin-bottom:1px; }
+        .auth-form-wrap { background:var(--ivory); display:flex; align-items:center; justify-content:center; padding:2.5rem 2rem; }
+        .auth-form-inner { width:100%; max-width:420px; }
+        .auth-form-inner h1 { font-size:1.8rem; margin-bottom:.35rem; }
+        .auth-sub { color:var(--muted); font-size:.9rem; margin-bottom:2rem; }
+        .auth-sub a { color:var(--teal-700); font-weight:600; }
+        .input-icon-wrap { position:relative; }
+        .input-icon-wrap .form-control { padding-left:2.5rem; }
+        .input-icon-wrap .input-icon { position:absolute; left:.85rem; top:50%; transform:translateY(-50%); color:var(--muted); font-size:.85rem; pointer-events:none; }
+        .show-pass-btn { position:absolute; right:.85rem; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--muted); cursor:pointer; font-size:.85rem; padding:2px; }
+        .back-to-site { display:inline-flex; align-items:center; gap:6px; font-size:.8rem; color:var(--muted); margin-bottom:2rem; text-decoration:none; transition:color .2s; }
+        .back-to-site:hover { color:var(--teal-700); }
+        .password-strength { height:4px; border-radius:2px; background:var(--stone); margin-top:.4rem; overflow:hidden; }
+        .password-strength-bar { height:100%; border-radius:2px; transition:width .3s, background .3s; width:0; background:var(--teal-500); }
+        @media (max-width:768px) { .auth-wrap { grid-template-columns:1fr; } .auth-panel { display:none; } }
+    </style>
+</head>
+<body>
+<div class="auth-wrap">
+    <div class="auth-panel">
+        <div class="auth-panel-logo">MedLink <span class="dot"></span></div>
+        <h2>Join the campus health community.</h2>
+        <p>Create your free student account to access university healthcare services, book appointments, and manage your health records.</p>
+        <div class="auth-steps">
+            <div class="auth-step">
+                <div class="step-num">1</div>
+                <div class="step-text"><strong>Create your account</strong>Register with your university email address.</div>
+            </div>
+            <div class="auth-step">
+                <div class="step-num">2</div>
+                <div class="step-text"><strong>Complete your profile</strong>Add your student ID, department, and health info.</div>
+            </div>
+            <div class="auth-step">
+                <div class="step-num">3</div>
+                <div class="step-text"><strong>Book your first appointment</strong>Browse specialists and schedule at your convenience.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-form-wrap">
+        <div class="auth-form-inner fade-in">
+            <a href="/" class="back-to-site"><i class="fa-solid fa-arrow-left"></i> Back to portal</a>
+            <h1 class="display">Create your account</h1>
+            <p class="auth-sub">Already registered? <a asp-page="./Login">Sign in here</a></p>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-error mb-3" style="display:@(ViewContext.ModelState.IsValid?"none":"flex")"></div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Input.Email">University Email</label>
+                    <div class="input-icon-wrap">
+                        <i class="input-icon fa-regular fa-envelope"></i>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="you@university.edu" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <div class="form-group" style="flex:1">
+                        <label class="form-label" asp-for="Input.Password">Password</label>
+                        <div class="input-icon-wrap">
+                            <i class="input-icon fa-solid fa-lock"></i>
+                            <input asp-for="Input.Password" id="passwordField" class="form-control" autocomplete="new-password" placeholder="Min. 6 characters" oninput="checkStrength(this.value)" />
+                            <button type="button" class="show-pass-btn" onclick="togglePass('passwordField','eye1')"><i class="fa-regular fa-eye" id="eye1"></i></button>
+                        </div>
+                        <div class="password-strength"><div class="password-strength-bar" id="strengthBar"></div></div>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" style="flex:1">
+                        <label class="form-label" asp-for="Input.ConfirmPassword">Confirm Password</label>
+                        <div class="input-icon-wrap">
+                            <i class="input-icon fa-solid fa-shield-halved"></i>
+                            <input asp-for="Input.ConfirmPassword" id="confirmField" class="form-control" autocomplete="new-password" placeholder="Repeat password" />
+                            <button type="button" class="show-pass-btn" onclick="togglePass('confirmField','eye2')"><i class="fa-regular fa-eye" id="eye2"></i></button>
+                        </div>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <p class="form-hint mb-3"><i class="fa-solid fa-circle-info" style="color:var(--teal-500)"></i> Password must be at least 6 characters and include a digit.</p>
+
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                    <i class="fa-solid fa-user-plus"></i> Create Account
+                </button>
+
+                <p style="font-size:.78rem;color:var(--muted);margin-top:1rem;text-align:center;">
+                    By registering you agree to our
+                    <a asp-controller="Home" asp-action="Privacy" style="color:var(--teal-700)">Privacy Policy</a> and
+                    <a asp-controller="Home" asp-action="Terms" style="color:var(--teal-700)">Terms of Service</a>.
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function togglePass(id, iconId) {
+        const f = document.getElementById(id), e = document.getElementById(iconId);
+        f.type = f.type === 'password' ? 'text' : 'password';
+        e.className = f.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    }
+    function checkStrength(v) {
+        const bar = document.getElementById('strengthBar');
+        let s = 0;
+        if (v.length >= 6) s++;
+        if (v.length >= 10) s++;
+        if (/[0-9]/.test(v)) s++;
+        if (/[A-Z]/.test(v)) s++;
+        if (/[^a-zA-Z0-9]/.test(v)) s++;
+        const colors = ['#ef4444','#f97316','#eab308','#22c55e','#16a34a'];
+        bar.style.width = (s * 20) + '%';
+        bar.style.background = colors[Math.max(0, s-1)];
+    }
+</script>
+</body>
+</html>

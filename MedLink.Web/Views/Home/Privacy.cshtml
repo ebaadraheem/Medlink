@@ -1,0 +1,69 @@
+@{ ViewData["Title"] = "Privacy Policy"; }
+
+<section class="profile-hero" style="padding: 3rem 0;">
+    <div class="container">
+        <div class="hero-eyebrow" style="color: var(--teal-300);">Legal</div>
+        <h1 class="display mt-2" style="color:#fff;">Privacy Policy</h1>
+        <p style="color:rgba(255,255,255,.7);">Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
+    </div>
+</section>
+
+<section class="section container" style="max-width: 820px; padding-top: 2.5rem;">
+    <div class="card">
+        <div class="card-body" style="padding: 2.5rem;">
+
+            <div class="alert alert-info" style="margin-bottom: 2rem;">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>This policy applies to all users of the MedLink University Health Portal. By creating an account you agree to these terms.</span>
+            </div>
+
+            @{
+                var sections = new[] {
+                    ("fa-database", "1. Information We Collect",
+                     "We collect information you provide directly when creating an account (name, university email, student/staff ID, date of birth, department) and information generated through your use of the portal (appointment history, health records, vitals, diagnoses, and prescriptions entered by authorised medical staff)."),
+                    ("fa-lock", "2. How We Use Your Information",
+                     "Your personal and health data is used solely to operate and improve MedLink services. This includes: facilitating appointment booking and management, generating and maintaining secure digital health records, sending transactional notifications (confirmations, reminders, cancellations) via our email service, and enabling authorised administrators and doctors to manage the health centre workflow."),
+                    ("fa-user-shield", "3. Data Access & Sharing",
+                     "MedLink operates on a strict need-to-know basis. Patients can view only their own records. Doctors can view records for appointments assigned to them. Administrators can manage the system (users, doctors, appointments) but do not have access to the content of health records. We do not sell, rent, or share your data with any third parties for marketing purposes."),
+                    ("fa-shield-halved", "4. Data Security",
+                     "We implement industry-standard security measures including encrypted passwords (ASP.NET Core Identity with PBKDF2 hashing), HTTPS/TLS for all data in transit, role-based access control enforced at the server level, and secure session management. Despite these measures, no system is 100% immune to risk and we encourage you to keep your password confidential."),
+                    ("fa-calendar-days", "5. Data Retention",
+                     "Your account data and health records are retained for the duration of your enrollment or employment at the university, plus a legally required archival period. You may request deletion of your account by contacting support@medlink.edu, subject to any legal or regulatory obligations to retain certain health records."),
+                    ("fa-cookie-bite", "6. Cookies",
+                     "MedLink uses only essential session cookies required to keep you logged in and maintain application state. We do not use tracking, analytics, or advertising cookies. You can disable cookies in your browser settings, but this will prevent you from using the portal."),
+                    ("fa-gavel", "7. Your Rights",
+                     "You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact support@medlink.edu from your registered university email address. We will respond within 30 business days."),
+                    ("fa-rotate", "8. Changes to This Policy",
+                     "We may update this Privacy Policy from time to time. We will notify registered users by email when material changes are made. Continued use of the portal after changes constitutes acceptance of the updated policy."),
+                };
+            }
+
+            @foreach (var (icon, heading, body) in sections)
+            {
+                <div style="margin-bottom: 2.25rem; padding-bottom: 2.25rem; border-bottom: 1px solid var(--color-border);">
+                    <h3 style="display:flex; align-items:center; gap:10px; color:var(--teal-800); margin-bottom:.75rem;">
+                        <i class="fa-solid @icon" style="color:var(--teal-500); font-size:1rem;"></i> @heading
+                    </h3>
+                    <p style="margin:0; line-height:1.8;">@body</p>
+                </div>
+            }
+
+            <div style="margin-top: 1rem;">
+                <h3 style="color:var(--teal-800); margin-bottom:.75rem;"><i class="fa-solid fa-envelope" style="color:var(--teal-500); margin-right:8px;"></i>9. Contact</h3>
+                <p>If you have any questions about this Privacy Policy or your data, please contact our Data Protection Officer at <a href="mailto:privacy@medlink.edu" style="color:var(--teal-700); font-weight:600;">privacy@medlink.edu</a> or write to us at:</p>
+                <div style="margin-top:1rem; padding: 1rem 1.25rem; background:var(--teal-50); border-radius:var(--radius-md); border: 1px solid var(--teal-100);">
+                    <strong style="font-family:var(--font-mono); color:var(--teal-800);">MedLink Data Protection Office</strong><br/>
+                    Health & Wellness Building, Block C<br/>
+                    University Campus, Main Road<br/>
+                    Email: <a href="mailto:privacy@medlink.edu" style="color:var(--teal-700);">privacy@medlink.edu</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-4 flex-wrap">
+        <a asp-action="Terms" class="btn btn-outline"><i class="fa-solid fa-file-lines"></i> Terms of Service</a>
+        <a asp-action="Contact" class="btn btn-ghost"><i class="fa-regular fa-envelope"></i> Contact Support</a>
+    </div>
+</section>

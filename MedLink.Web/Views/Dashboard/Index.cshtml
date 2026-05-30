@@ -1,0 +1,61 @@
+@model MedLink.Presenter.ViewModels.AdminDashboardViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="admin-topbar">
+    <h1 class="mt-0 mb-0">Dashboard Overview</h1>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-card">
+        <i class="fa-solid fa-calendar-check stat-icon"></i>
+        <div class="stat-label">Today's Appointments</div>
+        <div class="stat-value">@Model.TodayAppointments</div>
+    </div>
+    <div class="stat-card coral">
+        <i class="fa-solid fa-clock stat-icon"></i>
+        <div class="stat-label">Pending Reviews</div>
+        <div class="stat-value">@Model.PendingAppointments</div>
+    </div>
+    <div class="stat-card green">
+        <i class="fa-solid fa-users stat-icon"></i>
+        <div class="stat-label">Total Patients</div>
+        <div class="stat-value">@Model.TotalPatients</div>
+    </div>
+    <div class="stat-card purple">
+        <i class="fa-solid fa-user-doctor stat-icon"></i>
+        <div class="stat-label">Active Doctors</div>
+        <div class="stat-value">@Model.TotalDoctors</div>
+    </div>
+</div>
+
+<h3 class="mb-3">Recent Appointments</h3>
+<div class="card table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Appt No</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appt in Model.RecentAppointments)
+            {
+                <tr>
+                    <td class="appt-number">@appt.AppointmentNumber</td>
+                    <td>@appt.PatientName</td>
+                    <td>@appt.DoctorName</td>
+                    <td>@appt.AppointmentDate.ToString("MMM dd") <br/><span class="text-xs text-muted">@appt.TimeDisplay</span></td>
+                    <td><span class="badge status-@appt.Status.ToString().ToLower()">@appt.Status</span></td>
+                    <td><a href="/admin/appointments/@appt.Id" class="btn btn-ghost btn-sm">View</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

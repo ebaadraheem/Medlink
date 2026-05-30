@@ -1,0 +1,58 @@
+@model MedLink.Presenter.ViewModels.AppointmentViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Appointment Detail";
+}
+
+<div class="admin-topbar">
+    <h1 class="mt-0 mb-0">Appointment @Model.AppointmentNumber</h1>
+    <a href="/admin/appointments" class="btn btn-ghost">Back to List</a>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="card p-4">
+        <h3 class="mt-0 mb-3">Details</h3>
+        <p><strong>Patient:</strong> @Model.PatientName</p>
+        <p><strong>Doctor:</strong> @Model.DoctorName (@Model.DoctorSpecialty)</p>
+        <p><strong>Schedule:</strong> @Model.AppointmentDate.ToString("dddd, MMMM dd, yyyy") at @Model.TimeDisplay</p>
+        <p><strong>Current Status:</strong> <span class="badge status-@Model.Status.ToString().ToLower()">@Model.StatusLabel</span></p>
+        <hr class="divider"/>
+        <p><strong>Patient Reason:</strong> <br/>@(Model.Reason ?? "None provided")</p>
+    </div>
+
+    <div class="card p-4">
+        <h3 class="mt-0 mb-3">Update Status & Medical Record</h3>
+        <form action="/admin/appointments/update-status" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-control">
+                    <option value="Pending"   @(Model.Status == MedLink.Model.Enums.AppointmentStatus.Pending    ? "selected" : "")>Pending</option>
+                    <option value="Confirmed" @(Model.Status == MedLink.Model.Enums.AppointmentStatus.Confirmed  ? "selected" : "")>Confirmed</option>
+                    <option value="Completed" @(Model.Status == MedLink.Model.Enums.AppointmentStatus.Completed  ? "selected" : "")>Completed</option>
+                    <option value="Cancelled" @(Model.Status == MedLink.Model.Enums.AppointmentStatus.Cancelled  ? "selected" : "")>Cancelled</option>
+                    <option value="NoShow"    @(Model.Status == MedLink.Model.Enums.AppointmentStatus.NoShow     ? "selected" : "")>No Show</option>
+                </select>
+                <div class="form-hint">Setting status to 'Completed' and providing a Diagnosis will automatically generate a Health Record for the patient.</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Diagnosis</label>
+                <input type="text" name="diagnosis" value="@Model.Diagnosis" class="form-control" placeholder="Required for Completion" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Prescription</label>
+                <textarea name="prescription" class="form-control" rows="3">@Model.Prescription</textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Private Notes</label>
+                <textarea name="notes" class="form-control" rows="2">@Model.Notes</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Appointment</button>
+        </form>
+    </div>
+</div>

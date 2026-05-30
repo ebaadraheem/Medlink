@@ -1,0 +1,40 @@
+@model MedLink.Presenter.ViewModels.AppointmentViewModel
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<div class="container section-sm">
+    <div class="confirm-card">
+        <div class="confirm-header">
+            <div class="confirm-icon"><i class="fa-solid fa-check"></i></div>
+            <h2>Appointment Confirmed!</h2>
+            <p>Your booking details have been saved.</p>
+        </div>
+        <div class="confirm-body">
+            <div class="confirm-detail">
+                <span class="label">Appointment ID</span>
+                <span class="value appt-number">@Model.AppointmentNumber</span>
+            </div>
+            <div class="confirm-detail">
+                <span class="label">Doctor</span>
+                <span class="value">@Model.DoctorName</span>
+            </div>
+            <div class="confirm-detail">
+                <span class="label">Date</span>
+                <span class="value">@Model.AppointmentDate.ToString("dddd, MMMM dd, yyyy")</span>
+            </div>
+            <div class="confirm-detail">
+                <span class="label">Time</span>
+                <span class="value">@Model.TimeDisplay</span>
+            </div>
+            <div class="confirm-detail">
+                <span class="label">Fee</span>
+                <span class="value">Rs. @Model.Fee</span>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <a asp-action="Index" class="btn btn-primary">Go to My Appointments</a>
+            </div>
+        </div>
+    </div>
+</div>

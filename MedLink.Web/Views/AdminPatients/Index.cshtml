@@ -1,0 +1,37 @@
+@model List<MedLink.Model.Entities.Patient>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Patients Registry";
+}
+
+<div class="admin-topbar">
+    <h1 class="mt-0 mb-0">Registered Patients</h1>
+</div>
+
+<div class="card table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Student ID</th>
+                <th>Department</th>
+                <th>Blood Group</th>
+                <th>Total Appointments</th>
+                <th>Joined Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td><strong>@p.FullName</strong></td>
+                    <td>@p.StudentId</td>
+                    <td>@p.Department</td>
+                    <td><span class="badge badge-coral">@p.BloodGroup</span></td>
+                    <td>@p.Appointments.Count()</td>
+                    <td>@p.CreatedAt.ToString("MMM dd, yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

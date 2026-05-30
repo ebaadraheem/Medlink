@@ -1,0 +1,46 @@
+@model List<MedLink.Presenter.ViewModels.DoctorCardViewModel>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Manage Doctors";
+}
+
+<div class="admin-topbar">
+    <h1 class="mt-0 mb-0">Manage Doctors</h1>
+    <a href="/admin/doctors/create" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Doctor</a>
+</div>
+
+<div class="card table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Specialty</th>
+                <th>Fee</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var doc in Model)
+            {
+                <tr>
+                    <td><strong>@doc.Name</strong></td>
+                    <td>@doc.SpecialtyName</td>
+                    <td>Rs. @doc.ConsultationFee</td>
+                    <td>@doc.AverageRating.ToString("0.0") <i class="fa-solid fa-star" style="color: #F0A030; font-size:10px;"></i></td>
+                    <td>
+                        @if (doc.IsAvailable) { <span class="badge badge-green">Available</span> }
+                        else { <span class="badge badge-gray">Unavailable</span> }
+                    </td>
+                    <td>
+                        <a href="/admin/doctors/edit/@doc.Id" class="btn btn-outline btn-sm">Edit</a>
+                        <form action="/admin/doctors/delete/@doc.Id" method="post" style="display:inline;" onsubmit="return confirm('Delete this doctor?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

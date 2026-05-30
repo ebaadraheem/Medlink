@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - MedLink</title>
+    <link rel="stylesheet" href="~/css/medlink.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">MedLink <span>Admin</span></div>
+            
+            <div class="sidebar-label">Main Menu</div>
+            <a href="/admin/dashboard" class="sidebar-link">
+                <i class="fa-solid fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="/admin/appointments" class="sidebar-link">
+                <i class="fa-regular fa-calendar-check"></i> Appointments
+            </a>
+            
+            <div class="sidebar-label">Management</div>
+            <a href="/admin/doctors" class="sidebar-link">
+                <i class="fa-solid fa-user-doctor"></i> Doctors
+            </a>
+            <a href="/admin/patients" class="sidebar-link">
+                <i class="fa-solid fa-users"></i> Patients
+            </a>
+            <a href="/admin/specialties" class="sidebar-link">
+                <i class="fa-solid fa-stethoscope"></i> Specialties
+            </a>
+            
+            <div class="sidebar-label">System</div>
+            <a href="/" class="sidebar-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> View Portal
+            </a>
+        </aside>
+
+        <main class="admin-content">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+    
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

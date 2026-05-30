@@ -1,0 +1,62 @@
+@model List<MedLink.Presenter.ViewModels.AppointmentViewModel>
+@{
+    ViewData["Title"] = "My Appointments";
+}
+
+<div class="container section-sm">
+    <div class="d-flex justify-between align-center mb-4">
+        <h1 class="display mt-0 mb-0">My Appointments</h1>
+        <a asp-controller="Home" asp-action="Doctors" class="btn btn-primary">Book New</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">You don't have any appointments yet.</div>
+    }
+    else
+    {
+        <div class="table-wrap card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Doctor</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appt in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@appt.AppointmentDate.ToString("MMM dd, yyyy")</strong><br/>
+                                <span class="text-sm">@appt.TimeDisplay</span>
+                            </td>
+                            <td>
+                                <strong class="text-teal">@appt.DoctorName</strong><br/>
+                                <span class="text-sm">@appt.DoctorSpecialty</span>
+                            </td>
+                            <td>
+                                <span class="badge status-@appt.Status.ToString().ToLower()">@appt.StatusLabel</span>
+                            </td>
+                            <td>
+                                @if (appt.Status == MedLink.Model.Enums.AppointmentStatus.Pending || appt.Status == MedLink.Model.Enums.AppointmentStatus.Confirmed)
+                                {
+                                    <form asp-action="Cancel" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                                        <input type="hidden" name="id" value="@appt.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                                    </form>
+                                }
+                                @if (appt.HasHealthRecord)
+                                {
+                                    <a asp-action="HealthRecord" asp-route-id="@appt.HealthRecordId" class="btn btn-outline btn-sm">View Record</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

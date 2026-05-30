@@ -1,0 +1,48 @@
+@model List<MedLink.Presenter.ViewModels.AppointmentViewModel>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Manage Appointments";
+}
+
+<div class="admin-topbar">
+    <h1 class="mt-0 mb-0">Appointments</h1>
+    <form method="get" class="d-flex align-center gap-1">
+        <select name="status" class="form-control" onchange="this.form.submit()">
+            <option value="">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+    </form>
+</div>
+
+<div class="card table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Appt No</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appt in Model)
+            {
+                <tr>
+                    <td class="appt-number">@appt.AppointmentNumber</td>
+                    <td>@appt.PatientName</td>
+                    <td>@appt.DoctorName <br/><span class="text-xs text-muted">@appt.DoctorSpecialty</span></td>
+                    <td>@appt.AppointmentDate.ToString("MMM dd, yyyy") <br/><span class="text-xs text-muted">@appt.TimeDisplay</span></td>
+                    <td><span class="badge status-@appt.Status.ToString().ToLower()">@appt.StatusLabel</span></td>
+                    <td>
+                        <a href="/admin/appointments/@appt.Id" class="btn btn-outline btn-sm">Manage</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

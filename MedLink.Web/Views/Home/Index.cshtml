@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "University Health Portal";
+    var specialties = ViewBag.Specialties as List<SpecialtyViewModel>;
+    var featuredDoctors = ViewBag.FeaturedDoctors as List<DoctorCardViewModel>;
+}
+
+<section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="container position-relative">
+        <div class="hero-eyebrow fade-in">University Health Portal</div>
+        <h1 class="display fade-in fade-in-delay-1">Your health,<br/>prioritized and accessible.</h1>
+        <p class="fade-in fade-in-delay-2">Book appointments, manage your health records, and connect with top university specialists instantly.</p>
+        
+        <form asp-action="Doctors" method="get" class="hero-search fade-in fade-in-delay-3">
+            <input type="text" name="search" placeholder="Search for doctors, specialties..." />
+            <button type="submit" class="btn btn-primary" style="border-radius: 50px;">Search</button>
+        </form>
+
+        <div class="hero-stats fade-in fade-in-delay-3">
+            <div>
+                <div class="hero-stat-val">20+</div>
+                <div class="hero-stat-label">Specialists</div>
+            </div>
+            <div>
+                <div class="hero-stat-val">5k+</div>
+                <div class="hero-stat-label">Students Served</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section container">
+    <div class="section-label">Browse by Discipline</div>
+    <h2 class="section-title">Medical Specialties</h2>
+    <div class="specialty-grid mt-4">
+        @if (specialties != null)
+        {
+            foreach (var spec in specialties)
+            {
+                <a asp-action="Doctors" asp-route-specialtyId="@spec.Id" class="specialty-card">
+                    <div class="specialty-icon"><i class="fa-solid @spec.Icon"></i></div>
+                    <div class="specialty-name">@spec.Name</div>
+                    <div class="specialty-count">@spec.DoctorCount Doctors</div>
+                </a>
+            }
+        }
+    </div>
+</section>
+
+<section class="section" style="background: var(--ivory-dk);">
+    <div class="container">
+        <div class="d-flex justify-between align-center mb-4">
+            <div>
+                <div class="section-label">Top Rated</div>
+                <h2 class="section-title mb-0">Featured Doctors</h2>
+            </div>
+            <a asp-action="Doctors" class="btn btn-outline">View All</a>
+        </div>
+
+        <div class="doctors-grid">
+            @if (featuredDoctors != null)
+            {
+                foreach (var doc in featuredDoctors)
+                {
+                    <div class="doctor-card card">
+                        @if (doc.HasPhoto)
+                        {
+                            <img src="/Image/Doctor/@doc.Id" alt="@doc.Name" class="doctor-card-photo" />
+                        }
+                        else
+                        {
+                            <div class="doctor-card-avatar">@doc.Name.Substring(0, 1)</div>
+                        }
+                        <div class="doctor-card-body">
+                            <div class="doctor-card-specialty"><i class="fa-solid fa-stethoscope"></i> @doc.SpecialtyName</div>
+                            <h3 class="doctor-card-name">@doc.Name</h3>
+                            <div class="doctor-card-qual">@doc.Qualifications</div>
+                            
+                            <div class="doctor-card-meta">
+                                <span><i class="fa-solid fa-briefcase"></i> @doc.ExperienceYears yrs exp</span>
+                                <div class="rating">
+                                    <i class="fa-solid fa-star star"></i>
+                                    <span class="rating-count">@doc.AverageRating.ToString("0.0") (@doc.ReviewCount)</span>
+                                </div>
+                            </div>
+                            <a asp-action="DoctorDetail" asp-route-id="@doc.Id" class="btn btn-outline" style="width: 100%; justify-content: center;">View Profile</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>

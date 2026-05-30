@@ -1,0 +1,170 @@
+@{ ViewData["Title"] = "Contact Us"; }
+
+<!-- Page Header -->
+<section class="profile-hero" style="padding: 3rem 0;">
+    <div class="container">
+        <div class="hero-eyebrow" style="color: var(--teal-300);">University Health Portal</div>
+        <h1 class="display mt-2" style="color:#fff; font-size:2.2rem;">Get in Touch</h1>
+        <p style="color:rgba(255,255,255,.7); max-width:500px;">We're here to help students and staff with any questions about the health portal, appointments, or medical services.</p>
+    </div>
+</section>
+
+<section class="section container" style="padding-top: 3rem;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+
+        <!-- Contact Info -->
+        <div>
+            <div class="section-label">Reach Out</div>
+            <h2 class="section-title">How can we help you?</h2>
+            <p style="margin-bottom: 2rem;">For appointment issues, login problems, or general enquiries, use any of the channels below. Our health centre staff respond within one business day.</p>
+
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+                <div class="card" style="border-left: 4px solid var(--teal-500);">
+                    <div class="card-body" style="display:flex; gap: 1rem; align-items:flex-start; padding:1.25rem;">
+                        <div class="specialty-icon" style="flex-shrink:0; margin:0; width:44px;height:44px; font-size:1.1rem;">
+                            <i class="fa-regular fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:.2rem;">Email Support</h4>
+                            <a href="mailto:support@medlink.edu" style="color:var(--teal-700); font-weight:600;">support@medlink.edu</a>
+                            <p class="text-sm mt-0" style="margin-top:.25rem;">Replies within 24 hours on business days.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--accent-amber);">
+                    <div class="card-body" style="display:flex; gap: 1rem; align-items:flex-start; padding:1.25rem;">
+                        <div class="specialty-icon" style="flex-shrink:0; margin:0; width:44px;height:44px; font-size:1.1rem; background:var(--teal-100);">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:.2rem;">Phone / Front Desk</h4>
+                            <a href="tel:03001112222" style="color:var(--teal-700); font-weight:600; font-family: var(--font-mono);">0300-111-2222</a>
+                            <p class="text-sm mt-0" style="margin-top:.25rem;">Mon–Fri, 8:00 AM – 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--accent-green);">
+                    <div class="card-body" style="display:flex; gap: 1rem; align-items:flex-start; padding:1.25rem;">
+                        <div class="specialty-icon" style="flex-shrink:0; margin:0; width:44px;height:44px; font-size:1.1rem; background:var(--teal-100);">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:.2rem;">Walk-In Centre</h4>
+                            <span style="color:var(--navy-800); font-weight:600;">Health & Wellness Building, Block C</span>
+                            <p class="text-sm mt-0" style="margin-top:.25rem;">Campus Main Road, University Avenue</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-left: 4px solid var(--accent-coral);">
+                    <div class="card-body" style="display:flex; gap: 1rem; align-items:flex-start; padding:1.25rem;">
+                        <div class="specialty-icon" style="flex-shrink:0; margin:0; width:44px;height:44px; font-size:1.1rem; background:var(--teal-100);">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom:.2rem; color: var(--accent-coral);">Medical Emergency</h4>
+                            <span style="font-weight:600; font-family:var(--font-mono);">1122 (Rescue)</span>
+                            <p class="text-sm mt-0" style="margin-top:.25rem;">For on-campus emergencies dial campus security: <strong>ext. 911</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa-regular fa-paper-plane" style="color:var(--teal-500);margin-right:8px;"></i>Send Us a Message</h3>
+                </div>
+                <div class="card-body">
+                    <div id="formSuccess" class="alert alert-success" style="display:none;">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Your message has been sent! We'll get back to you within 24 hours.</span>
+                    </div>
+                    <form id="contactForm" onsubmit="submitForm(event)">
+                        <div class="d-flex gap-2">
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" placeholder="Your name" required />
+                            </div>
+                            <div class="form-group" style="flex:1">
+                                <label class="form-label">Student / Staff ID</label>
+                                <input type="text" class="form-control" placeholder="e.g. STU-2024-001" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">University Email</label>
+                            <input type="email" class="form-control" placeholder="you@university.edu" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subject</label>
+                            <select class="form-control">
+                                <option value="">Select a topic...</option>
+                                <option>Appointment Issue</option>
+                                <option>Login or Account Problem</option>
+                                <option>Health Record Query</option>
+                                <option>Prescription / Medication</option>
+                                <option>Technical Support</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" rows="5" placeholder="Describe your issue or question in detail..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+                            <i class="fa-regular fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- FAQ strip -->
+<section class="section-sm" style="background: var(--ivory-dk); border-top: 1px solid var(--stone); margin-top: 2rem;">
+    <div class="container">
+        <div style="text-align:center; margin-bottom: 2rem;">
+            <div class="section-label">Quick Answers</div>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem;">
+            @{
+                var faqs = new[] {
+                    ("How do I book an appointment?", "Log in, go to Find a Doctor, select a specialist, pick an available slot, and confirm your booking."),
+                    ("Can I cancel an appointment?", "Yes. Visit My Appointments and select Cancel on any Pending or Confirmed appointment before 2 hours of the scheduled time."),
+                    ("Where are my health records?", "After a doctor marks an appointment as Completed, your health record is automatically generated under My Appointments → View Record."),
+                    ("I forgot my password.", "Click "Forgot password?" on the Sign In page and we'll send a reset link to your registered university email."),
+                    ("Who can see my health data?", "Only you and the doctor assigned to your appointment can view your health records. Admins manage the system but cannot read record contents."),
+                    ("Is MedLink available outside campus?", "Yes — the portal is fully web-based and accessible anywhere with an internet connection.")
+                };
+            }
+            @foreach (var (q, a) in faqs)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h4 style="font-size:.95rem; color:var(--teal-800); margin-bottom:.5rem;"><i class="fa-solid fa-circle-question" style="color:var(--teal-400); margin-right:6px;"></i>@q</h4>
+                        <p class="text-sm mt-0">@a</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'flex';
+}
+</script>
+}

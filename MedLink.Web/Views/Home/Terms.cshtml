@@ -1,0 +1,62 @@
+@{ ViewData["Title"] = "Terms of Service"; }
+
+<section class="profile-hero" style="padding: 3rem 0;">
+    <div class="container">
+        <div class="hero-eyebrow" style="color: var(--teal-300);">Legal</div>
+        <h1 class="display mt-2" style="color:#fff;">Terms of Service</h1>
+        <p style="color:rgba(255,255,255,.7);">Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
+    </div>
+</section>
+
+<section class="section container" style="max-width: 820px; padding-top: 2.5rem;">
+    <div class="card">
+        <div class="card-body" style="padding: 2.5rem;">
+
+            <div class="alert alert-warning" style="margin-bottom: 2rem;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>MedLink is a supplementary health management tool. <strong>In case of a medical emergency, call 1122 or campus security (ext. 911) immediately.</strong></span>
+            </div>
+
+            @{
+                var terms = new[] {
+                    ("fa-circle-check", "1. Acceptance of Terms",
+                     "By registering for and using the MedLink University Health Portal, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, you may not use the portal."),
+                    ("fa-id-card", "2. Eligibility & Account Responsibility",
+                     "MedLink is available exclusively to currently enrolled students and employed staff of the university. You are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account. You must notify support@medlink.edu immediately of any unauthorised access."),
+                    ("fa-user-check", "3. Acceptable Use",
+                     "You agree to use MedLink only for lawful purposes related to your personal healthcare management. You must not attempt to access another user's records, interfere with portal functionality, submit false medical information, or impersonate medical personnel. Violations may result in account suspension and disciplinary action."),
+                    ("fa-stethoscope", "4. Medical Disclaimer",
+                     "MedLink is an administrative portal and appointment management tool. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare professional for any medical conditions. Content in health records reflects notes entered by authorised doctors and should be discussed directly with them."),
+                    ("fa-calendar-xmark", "5. Appointment Cancellation Policy",
+                     "You may cancel a Pending or Confirmed appointment through the portal. Please cancel at least 2 hours before the scheduled time as a courtesy to other patients. Repeated last-minute cancellations or no-shows may result in temporary booking restrictions."),
+                    ("fa-shield", "6. Intellectual Property",
+                     "All content, design, code, and trademarks associated with MedLink are the property of the university and its health services department. You may not reproduce, distribute, or create derivative works without explicit written permission."),
+                    ("fa-scale-balanced", "7. Limitation of Liability",
+                     "The university and MedLink developers shall not be liable for any indirect, incidental, or consequential damages arising from your use of the portal, including but not limited to missed appointments due to technical issues, errors in health records, or service interruptions. We strive for 99.9% uptime but do not guarantee uninterrupted availability."),
+                    ("fa-rotate", "8. Modifications to Terms",
+                     "We reserve the right to update these Terms of Service at any time. Registered users will be notified by email when material changes occur. Your continued use of the portal after such changes constitutes acceptance of the new terms."),
+                };
+            }
+
+            @foreach (var (icon, heading, body) in terms)
+            {
+                <div style="margin-bottom: 2.25rem; padding-bottom: 2.25rem; border-bottom: 1px solid var(--color-border);">
+                    <h3 style="display:flex; align-items:center; gap:10px; color:var(--teal-800); margin-bottom:.75rem;">
+                        <i class="fa-solid @icon" style="color:var(--teal-500); font-size:1rem;"></i> @heading
+                    </h3>
+                    <p style="margin:0; line-height:1.8;">@body</p>
+                </div>
+            }
+
+            <div>
+                <h3 style="color:var(--teal-800); margin-bottom:.75rem;"><i class="fa-solid fa-envelope" style="color:var(--teal-500); margin-right:8px;"></i>9. Contact</h3>
+                <p>For questions about these terms, contact <a href="mailto:support@medlink.edu" style="color:var(--teal-700); font-weight:600;">support@medlink.edu</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-4 flex-wrap">
+        <a asp-action="Privacy" class="btn btn-outline"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+        <a asp-action="Contact" class="btn btn-ghost"><i class="fa-regular fa-envelope"></i> Contact Support</a>
+    </div>
+</section>

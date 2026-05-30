@@ -1,0 +1,77 @@
+@model MedLink.Presenter.ViewModels.AdminDoctorViewModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Doctor";
+}
+
+<div class="admin-topbar">
+    <h1 class="mt-0 mb-0">Edit Doctor</h1>
+    <a href="/admin/doctors" class="btn btn-ghost">Cancel</a>
+</div>
+
+<div class="card p-4" style="max-width: 800px;">
+    <form action="/admin/doctors/edit/@Model.Id" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="d-flex gap-2">
+            <div class="form-group" style="flex: 2;">
+                <label class="form-label">Full Name</label>
+                <input asp-for="Name" class="form-control" required />
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label class="form-label">Specialty</label>
+                <select asp-for="SpecialtyId" class="form-control" required>
+                    @foreach(var spec in Model.Specialties)
+                    {
+                        <option value="@spec.Id">@spec.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Qualifications</label>
+            <input asp-for="Qualifications" class="form-control" required placeholder="e.g. MBBS, FCPS" />
+        </div>
+
+        <div class="d-flex gap-2">
+            <div class="form-group" style="flex: 1;">
+                <label class="form-label">Experience (Years)</label>
+                <input asp-for="ExperienceYears" type="number" class="form-control" required />
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label class="form-label">Consultation Fee (Rs.)</label>
+                <input asp-for="ConsultationFee" type="number" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <div class="form-group" style="flex: 1;">
+                <label class="form-label">Phone</label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Bio</label>
+            <textarea asp-for="Bio" class="form-control" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Profile Photo</label>
+            <input type="file" name="photo" class="form-control" accept="image/*" />
+        </div>
+
+        <div class="form-group mt-3">
+            <label class="form-label d-flex align-center gap-1">
+                <input asp-for="IsAvailable" type="checkbox" /> Doctor is active and available for booking
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Save Doctor</button>
+    </form>
+</div>

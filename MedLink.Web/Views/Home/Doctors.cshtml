@@ -1,0 +1,75 @@
+@model List<DoctorCardViewModel>
+@{
+    ViewData["Title"] = "Find a Doctor";
+    var specialties = ViewBag.Specialties as List<SpecialtyViewModel>;
+}
+
+<div class="container section-sm">
+    <h1 class="display mb-4">Find a Doctor</h1>
+    
+    <form method="get" class="filters">
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by name or qualification..." style="flex: 1; min-width: 250px;" />
+        
+        <select name="specialtyId" class="form-control">
+            <option value="">All Specialties</option>
+            @if(specialties != null)
+            {
+                foreach(var spec in specialties)
+                {
+                    if (ViewBag.SelectedSpecialty?.ToString() == spec.Id.ToString())
+                    {
+                        <option value="@spec.Id" selected>@spec.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@spec.Id">@spec.Name</option>
+                    }
+                }
+            }
+        </select>
+
+        <select name="sort" class="form-control">
+            <option value="rating">Highest Rated</option>
+            <option value="experience">Most Experience</option>
+            <option value="fee_asc">Fee: Low to High</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <a asp-action="Doctors" class="btn btn-ghost">Clear</a>
+    </form>
+
+    <div class="doctors-grid">
+        @foreach (var doc in Model)
+        {
+            <div class="doctor-card card">
+                @if (doc.HasPhoto)
+                {
+                    <img src="/Image/Doctor/@doc.Id" class="doctor-card-photo" />
+                }
+                else
+                {
+                    <div class="doctor-card-avatar">@doc.Name.Substring(0, 1)</div>
+                }
+                <div class="doctor-card-body">
+                    <div class="doctor-card-specialty">@doc.SpecialtyName</div>
+                    <h3 class="doctor-card-name">@doc.Name</h3>
+                    <div class="doctor-card-qual">@doc.Qualifications</div>
+                    <div class="doctor-card-meta">
+                        <span><i class="fa-solid fa-briefcase"></i> @doc.ExperienceYears yrs exp</span>
+                        <div class="rating">
+                            <i class="fa-solid fa-star star"></i>
+                            <span class="rating-count">@doc.AverageRating.ToString("0.0") (@doc.ReviewCount)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="doctor-card-footer">
+                    <div>
+                        <div class="fee-label">Consultation Fee</div>
+                        <div class="doctor-fee">Rs. @doc.ConsultationFee</div>
+                    </div>
+                    <a asp-action="DoctorDetail" asp-route-id="@doc.Id" class="btn btn-primary btn-sm">Book</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

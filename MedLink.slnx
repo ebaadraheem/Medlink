@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="MedLink.Model/MedLink.Model.csproj" />
+  <Project Path="MedLink.Presenter/MedLink.Presenter.csproj" />
+  <Project Path="MedLink.Web/MedLink.Web.csproj" />
+</Solution>

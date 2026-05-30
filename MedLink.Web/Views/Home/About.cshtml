@@ -1,0 +1,117 @@
+@{ ViewData["Title"] = "About MedLink"; }
+
+<!-- Hero -->
+<section class="hero" style="padding: 4rem 0;">
+    <div class="hero-grid-bg"></div>
+    <div class="container" style="position:relative;">
+        <div class="hero-eyebrow fade-in">Our Story</div>
+        <h1 class="display fade-in fade-in-delay-1" style="max-width:640px;">Transforming campus healthcare, one appointment at a time.</h1>
+        <p class="fade-in fade-in-delay-2" style="max-width:560px;">MedLink was built to replace paper forms, phone queues, and lost health records with a seamless, data-driven portal that puts students and staff in control of their health.</p>
+    </div>
+</section>
+
+<!-- Mission & Vision -->
+<section class="section container">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;">
+        <div>
+            <div class="section-label">Who We Are</div>
+            <h2 class="section-title">Built for the campus community</h2>
+            <p>MedLink is a University Health Portal designed to bridge the gap between students, staff, and the on-campus healthcare system. From booking your first GP appointment to reviewing a prescription history years later, every interaction is captured, secured, and accessible.</p>
+            <p style="margin-top:1rem;">We believe that accessing healthcare should never be a barrier — especially on a university campus where students are away from home and need reliable, trustworthy support.</p>
+            <div class="d-flex gap-2 mt-4 flex-wrap">
+                <a asp-action="Doctors" class="btn btn-primary"><i class="fa-solid fa-user-doctor"></i> Find a Doctor</a>
+                <a asp-action="Contact" class="btn btn-outline">Contact Us</a>
+            </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+            <div class="stat-card">
+                <i class="fa-solid fa-calendar-check stat-icon"></i>
+                <div class="stat-label">Appointments Managed</div>
+                <div class="stat-value">5,000+</div>
+            </div>
+            <div class="stat-card green">
+                <i class="fa-solid fa-users stat-icon"></i>
+                <div class="stat-label">Students & Staff Registered</div>
+                <div class="stat-value">3,200+</div>
+            </div>
+            <div class="stat-card purple">
+                <i class="fa-solid fa-user-doctor stat-icon"></i>
+                <div class="stat-label">Verified Specialists</div>
+                <div class="stat-value">20+</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Core Values -->
+<section class="section-sm" style="background: var(--ivory-dk); border-top:1px solid var(--stone); border-bottom:1px solid var(--stone);">
+    <div class="container">
+        <div style="text-align:center; margin-bottom: 2.5rem;">
+            <div class="section-label">What Drives Us</div>
+            <h2 class="section-title">Our core principles</h2>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem;">
+            @{
+                var values = new[] {
+                    ("fa-shield-halved", "Privacy First", "Your health data belongs to you. We use ASP.NET Identity with role-based access control to ensure only authorised personnel can view sensitive records."),
+                    ("fa-bolt", "Accessibility", "Available 24/7 from any device. Whether you're on campus or studying abroad, your health portal is always one click away."),
+                    ("fa-file-medical", "Accurate Records", "Digital health records are generated automatically after each completed appointment, reducing human error and lost paperwork."),
+                    ("fa-bell", "Timely Communication", "Automated email notifications for confirmations, reminders, and cancellations ensure you're never left in the dark.")
+                };
+            }
+            @foreach (var (icon, title, desc) in values)
+            {
+                <div class="card">
+                    <div class="card-body" style="text-align:center; padding: 2rem 1.5rem;">
+                        <div class="specialty-icon" style="margin: 0 auto 1rem; width:56px; height:56px; font-size:1.3rem;">
+                            <i class="fa-solid @icon"></i>
+                        </div>
+                        <h4 style="margin-bottom:.5rem; color:var(--navy-800);">@title</h4>
+                        <p class="text-sm">@desc</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="section container">
+    <div style="text-align:center; margin-bottom: 3rem;">
+        <div class="section-label">The Process</div>
+        <h2 class="section-title">How MedLink works</h2>
+        <p style="max-width:500px; margin: 0 auto;">A seamless three-step journey from symptom to health record.</p>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:2rem; position:relative;">
+        @{
+            var steps = new[] {
+                ("1", "fa-magnifying-glass", "Find Your Doctor", "Browse our directory of university specialists, filter by specialty, and view profiles, qualifications, ratings, and consultation fees."),
+                ("2", "fa-calendar-days", "Book an Appointment", "Choose a date and available time slot. Our double-booking prevention logic ensures your slot is exclusively yours."),
+                ("3", "fa-file-waveform", "Receive Your Record", "After your appointment, the doctor records vitals, diagnosis, and prescription. Your digital health record is instantly available.")
+            };
+        }
+        @foreach (var (num, icon, title, desc) in steps)
+        {
+            <div class="card" style="position:relative; overflow:visible;">
+                <div style="position:absolute; top:-18px; left:1.5rem; width:36px; height:36px; background:var(--teal-800); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-weight:700; color:#fff; font-size:.9rem; box-shadow: 0 4px 12px rgba(13,79,92,.3);">@num</div>
+                <div class="card-body" style="padding-top: 1.75rem;">
+                    <i class="fa-solid @icon" style="color:var(--teal-500); font-size:1.5rem; margin-bottom:.75rem; display:block;"></i>
+                    <h4 style="margin-bottom:.5rem;">@title</h4>
+                    <p class="text-sm">@desc</p>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section-sm" style="background: linear-gradient(135deg, var(--teal-900), var(--navy-800)); color:#fff; text-align:center;">
+    <div class="container">
+        <h2 style="color:#fff; margin-bottom:.75rem;">Ready to get started?</h2>
+        <p style="color:rgba(255,255,255,.7); max-width:480px; margin: 0 auto 2rem;">Join thousands of students and staff who manage their campus health through MedLink.</p>
+        <div class="d-flex gap-2 justify-content" style="justify-content:center; flex-wrap:wrap;">
+            <a href="/Identity/Account/Register" class="btn btn-primary btn-lg" style="background:#fff; color:var(--teal-800); border-color:#fff;">Create Free Account</a>
+            <a asp-action="Doctors" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,.4); color:#fff;">Browse Doctors</a>
+        </div>
+    </div>
+</section>
