@@ -68,7 +68,7 @@ MedLink is a semester project that demonstrates a real-world ASP.NET Core MVC ap
 | Fonts | Playfair Display + DM Sans + JetBrains Mono (Google Fonts) |
 | Icons | Font Awesome 6 |
 | Architecture | 3-layer: Model → Presenter → Web (MVP pattern) |
-| Hosting | Hugging Face Spaces via Docker (optional) |
+| Hosting | Railways via Dockerfile |
 
 ---
 
