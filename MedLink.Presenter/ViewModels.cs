@@ -55,6 +55,7 @@ public class BookAppointmentViewModel
     [Required]
     public int DoctorId { get; set; }
     [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "Please select a valid time slot.")]
     public int TimeSlotId { get; set; }
     [Required]
     public DateTime AppointmentDate { get; set; }

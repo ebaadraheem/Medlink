@@ -22,9 +22,13 @@
 
         <form asp-action="Book" method="post">
             <input type="hidden" asp-for="DoctorId" />
-            <input type="hidden" asp-for="TimeSlotId" id="TimeSlotId" />
+            <input type="hidden" asp-for="TimeSlotId" id="TimeSlotId" value="0" />
             
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DoctorName" />
+            <input type="hidden" asp-for="DoctorSpecialty" />
+            <input type="hidden" asp-for="Fee" />
+            
+            <div asp-validation-summary="All" class="text-danger fw-bold mb-3"></div>
 
             <div class="form-group">
                 <label class="form-label">Select Date</label>

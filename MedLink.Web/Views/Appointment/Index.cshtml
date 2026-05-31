@@ -29,17 +29,18 @@
                     @foreach (var appt in Model)
                     {
                         <tr>
-                            <td>
+                            <td data-label="Date & Time">
                                 <strong>@appt.AppointmentDate.ToString("MMM dd, yyyy")</strong><br/>
                                 <span class="text-sm">@appt.TimeDisplay</span>
                             </td>
-                            <td>
+                            <td data-label="Doctor">
                                 <strong class="text-teal">@appt.DoctorName</strong><br/>
                                 <span class="text-sm">@appt.DoctorSpecialty</span>
                             </td>
-                            <td>
+                            <td data-label="Status">
                                 <span class="badge status-@appt.Status.ToString().ToLower()">@appt.StatusLabel</span>
                             </td>
+                            <td data-label="Actions">
                             <td>
                                 @if (appt.Status == MedLink.Model.Enums.AppointmentStatus.Pending || appt.Status == MedLink.Model.Enums.AppointmentStatus.Confirmed)
                                 {
