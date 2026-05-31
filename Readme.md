@@ -2,7 +2,7 @@
 
 > A full-stack web application for university students to book appointments with campus doctors, manage health records, and interact with a clinic administration panel.
 
-Built with **ASP.NET Core 10 MVC**, **PostgreSQL (Supabase)**, and a fully custom design system — no Bootstrap. Originally structured around the MVP (Model–View–Presenter) pattern adapted from an e-commerce codebase and repurposed into a healthcare platform.
+Built with **ASP.NET Core 10 MVC**, **PostgreSQL (Supabase)**, and a fully custom design system — no Bootstrap. Originally structured around the MVC (Model–View–Controller) pattern adapted from an e-commerce codebase and repurposed into a healthcare platform.
 
 ---
 
@@ -67,7 +67,7 @@ MedLink is a semester project that demonstrates a real-world ASP.NET Core MVC ap
 | Frontend | Razor Views, vanilla JS, custom CSS design system |
 | Fonts | Playfair Display + DM Sans + JetBrains Mono (Google Fonts) |
 | Icons | Font Awesome 6 |
-| Architecture | 3-layer: Model → Presenter → Web (MVP pattern) |
+| Architecture | 3-layer: Model → View → Controller (MVC pattern) |
 | Hosting | Railways via Dockerfile |
 
 ---
