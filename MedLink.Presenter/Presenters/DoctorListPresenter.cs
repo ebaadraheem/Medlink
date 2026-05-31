@@ -68,56 +68,59 @@ public class DoctorListPresenter
 
     public async Task<DoctorDetailViewModel?> GetDoctorDetailAsync(int doctorId)
     {
-        var doctor = await _db.Doctors
-            .Include(d => d.Specialty)
-            .Include(d => d.TimeSlots)
-            .Include(d => d.Reviews)
-                .ThenInclude(r => r.Patient)
-            .AsSplitQuery() // <--- ADD THIS EXACT LINE HERE!
-            .FirstOrDefaultAsync(d => d.Id == doctorId);
+        // By using .Select() directly, Entity Framework writes a highly optimized SQL query
+        // that completely ignores the massive PhotoData byte array!
+        var viewModel = await _db.Doctors
+            .Where(d => d.Id == doctorId)
+            .AsSplitQuery()
+            .Select(d => new DoctorDetailViewModel
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Bio = d.Bio,
+                Qualifications = d.Qualifications,
+                SpecialtyName = d.Specialty.Name,
+                ExperienceYears = d.ExperienceYears,
+                ConsultationFee = d.ConsultationFee,
+                AverageRating = d.AverageRating,
+                ReviewCount = d.ReviewCount,
+                IsAvailable = d.IsAvailable,
+                Phone = d.Phone,
+                Email = d.Email,
+                
+                // THE MAGIC LINE: Postgres simply returns a tiny Boolean instead of megabytes of data
+                HasPhoto = d.PhotoData != null, 
+                
+                AvailableSlots = d.TimeSlots
+                    .Where(t => !t.IsBooked)
+                    .OrderBy(t => t.DayOfWeek)
+                    .ThenBy(t => t.StartTime)
+                    .Select(t => new TimeSlotViewModel
+                    {
+                        Id = t.Id,
+                        DayOfWeek = t.DayOfWeek,
+                        StartTime = t.StartTime,
+                        EndTime = t.EndTime,
+                        IsBooked = t.IsBooked
+                    }).ToList(),
+                    
+                Reviews = d.Reviews
+                    .OrderByDescending(r => r.CreatedAt)
+                    .Take(10)
+                    .Select(r => new ReviewViewModel
+                    {
+                        Id = r.Id,
+                        DoctorId = r.DoctorId,
+                        PatientName = r.Patient.FullName,
+                        Rating = r.Rating,
+                        Comment = r.Comment,
+                        CreatedAt = r.CreatedAt,
+                        IsVerified = r.IsVerified
+                    }).ToList()
+            })
+            .FirstOrDefaultAsync();
 
-        if (doctor == null) return null;
-
-        return new DoctorDetailViewModel
-        {
-            Id = doctor.Id,
-            Name = doctor.Name,
-            Bio = doctor.Bio,
-            Qualifications = doctor.Qualifications,
-            SpecialtyName = doctor.Specialty.Name,
-            ExperienceYears = doctor.ExperienceYears,
-            ConsultationFee = doctor.ConsultationFee,
-            AverageRating = doctor.AverageRating,
-            ReviewCount = doctor.ReviewCount,
-            IsAvailable = doctor.IsAvailable,
-            Phone = doctor.Phone,
-            Email = doctor.Email,
-            HasPhoto = doctor.PhotoData != null,
-            AvailableSlots = doctor.TimeSlots
-                .Where(t => !t.IsBooked)
-                .OrderBy(t => t.DayOfWeek)
-                .ThenBy(t => t.StartTime)
-                .Select(t => new TimeSlotViewModel
-                {
-                    Id = t.Id,
-                    DayOfWeek = t.DayOfWeek,
-                    StartTime = t.StartTime,
-                    EndTime = t.EndTime,
-                    IsBooked = t.IsBooked
-                }).ToList(),
-            Reviews = doctor.Reviews
-                .OrderByDescending(r => r.CreatedAt)
-                .Take(10)
-                .Select(r => new ReviewViewModel
-                {
-                    Id = r.Id,
-                    DoctorId = r.DoctorId,
-                    PatientName = r.Patient.FullName,
-                    Rating = r.Rating,
-                    Comment = r.Comment,
-                    CreatedAt = r.CreatedAt,
-                    IsVerified = r.IsVerified
-                }).ToList()
-        };
+        return viewModel;
+    
     }
 }
