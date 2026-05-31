@@ -1,5 +1,5 @@
 @page
-@model LoginModel
+@model MedLink.Web.Areas.Identity.Pages.Account.LoginModel
 @{
     ViewData["Title"] = "Sign In";
     Layout = null;
@@ -114,7 +114,7 @@
             text-decoration: none; transition: color .2s;
         }
         .back-to-site:hover { color: var(--teal-700); }
-        @media (max-width: 768px) {
+        @@media (max-width: 768px) {
             .auth-wrap { grid-template-columns: 1fr; }
             .auth-panel { display: none; }
         }

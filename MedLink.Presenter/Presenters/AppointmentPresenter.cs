@@ -31,6 +31,7 @@ public class AppointmentPresenter
         var doctor = await _db.Doctors.Include(d => d.Specialty).FirstOrDefaultAsync(d => d.Id == model.DoctorId);
         if (doctor == null) return (false, "Doctor not found.", 0);
 
+        model.AppointmentDate = DateTime.SpecifyKind(model.AppointmentDate, DateTimeKind.Utc);
         // Prevent double-booking same patient/doctor/date
         var alreadyBooked = await _db.Appointments.AnyAsync(a =>
             a.PatientId == patient.Id &&
@@ -78,7 +79,10 @@ public class AppointmentPresenter
         var patient = await _patients.GetByUserIdAsync(userId);
         if (patient == null) return new();
 
-        return await _db.Appointments
+        // Fetch all reviews left by this patient
+        var patientReviews = await _db.DoctorReviews.Where(r => r.PatientId == patient.Id).ToListAsync();
+
+        var appointments = await _db.Appointments
             .Where(a => a.PatientId == patient.Id)
             .Include(a => a.Doctor).ThenInclude(d => d.Specialty)
             .Include(a => a.TimeSlot)
@@ -87,6 +91,7 @@ public class AppointmentPresenter
             .Select(a => new AppointmentViewModel
             {
                 Id = a.Id,
+                DoctorId = a.DoctorId,
                 AppointmentNumber = a.AppointmentNumber,
                 DoctorName = a.Doctor.Name,
                 DoctorSpecialty = a.Doctor.Specialty.Name,
@@ -103,6 +108,19 @@ public class AppointmentPresenter
                 HasHealthRecord = a.HealthRecord != null,
                 HealthRecordId = a.HealthRecord != null ? a.HealthRecord.Id : null
             }).ToListAsync();
+
+        // Attach the review data to the respective appointments
+        foreach (var appt in appointments)
+        {
+            var review = patientReviews.FirstOrDefault(r => r.DoctorId == appt.DoctorId);
+            if (review != null)
+            {
+                appt.ExistingRating = review.Rating;
+                appt.ExistingReviewComment = review.Comment;
+            }
+        }
+
+        return appointments;
     }
 
     public async Task<bool> CancelAsync(int appointmentId, string userId)

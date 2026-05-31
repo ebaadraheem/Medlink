@@ -12,8 +12,9 @@ public class AdminDashboardPresenter
 
     public async Task<AdminDashboardViewModel> GetDashboardAsync()
     {
-        var today = DateTime.UtcNow.Date;
-        var monthStart = new DateTime(today.Year, today.Month, 1);
+        // Explicitly set the Kind to UTC to satisfy PostgreSQL's strict timezone rules
+        var today = DateTime.SpecifyKind(DateTime.UtcNow.Date, DateTimeKind.Utc);
+        var monthStart = new DateTime(today.Year, today.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
         var weekStats = new List<DailyStatViewModel>();
         for (int i = 6; i >= 0; i--)

@@ -187,6 +187,8 @@ a:hover { color: var(--teal-500); }
 }
 .btn-primary:hover {
   background: var(--teal-700); color: #fff;
+  color: #00796b; /* Add a dark color that matches your brand */
+  border: 1px solid #00796b;
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(13,79,92,.3);
 }

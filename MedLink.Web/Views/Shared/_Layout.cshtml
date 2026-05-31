@@ -13,11 +13,15 @@
             <a asp-controller="Home" asp-action="Index" class="nav-brand">
                 MedLink <span class="brand-dot"></span>
             </a>
+            @{
+                var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+                var action = ViewContext.RouteData.Values["Action"]?.ToString();
+            }
             <div class="nav-links">
-                <a asp-controller="Home" asp-action="Index">Home</a>
-                <a asp-controller="Home" asp-action="Doctors">Find a Doctor</a>
-                <a asp-controller="Home" asp-action="About">About Us</a>
-                <a asp-controller="Home" asp-action="Contact">Contact</a>
+                <a asp-controller="Home" asp-action="Index" class="@(controller == "Home" && action == "Index" ? "active" : "")">Home</a>
+                <a asp-controller="Home" asp-action="Doctors" class="@(controller == "Home" && action == "Doctors" ? "active" : "")">Find a Doctor</a>
+                <a asp-controller="Home" asp-action="About" class="@(controller == "Home" && action == "About" ? "active" : "")">About Us</a>
+                <a asp-controller="Home" asp-action="Contact" class="@(controller == "Home" && action == "Contact" ? "active" : "")">Contact</a>
             </div>
             <div class="nav-actions">
                 @if (User.Identity?.IsAuthenticated ?? false)

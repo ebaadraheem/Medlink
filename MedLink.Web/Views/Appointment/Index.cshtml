@@ -52,6 +52,47 @@
                                 {
                                     <a asp-action="HealthRecord" asp-route-id="@appt.HealthRecordId" class="btn btn-outline btn-sm">View Record</a>
                                 }
+                                
+                                @if (appt.Status == MedLink.Model.Enums.AppointmentStatus.Completed)
+                                {
+                                    @if(appt.HasReviewed)
+                                    {
+                                        <div class="mt-2 p-2" style="background:var(--ivory-dk); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                                            <div class="mb-1">
+                                                @for(int i=1; i<=5; i++)
+                                                {
+                                                    <i class="fa-solid fa-star @(i <= appt.ExistingRating ? "" : "empty")" style="@(i <= appt.ExistingRating ? "color: #F0A030;" : "color: #D1D5DB;")"></i>
+                                                }
+                                            </div>
+                                            <p class="mt-0 mb-1 text-muted">"@appt.ExistingReviewComment"</p>
+                                        </div>
+                                        <button type="button" class="btn btn-ghost btn-sm mt-1" onclick="document.getElementById('review-box-@appt.Id').style.display='block'">Edit Review</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-ghost btn-sm mt-1" onclick="document.getElementById('review-box-@appt.Id').style.display='block'">Leave Review</button>
+                                    }
+                                    
+                                    <div id="review-box-@appt.Id" style="display:none; margin-top:10px; padding:15px; background:var(--color-bg-secondary); border-radius:8px;">
+                                        <form asp-action="Review" method="post">
+                                            <input type="hidden" name="DoctorId" value="@appt.DoctorId" />
+                                            <div class="form-group mb-2">
+                                                <select name="Rating" class="form-control" required>
+                                                    <option value="">Select Rating...</option>
+                                                    <option value="5" selected="@(appt.ExistingRating == 5 ? "selected" : null)">⭐⭐⭐⭐⭐ (5/5)</option>
+                                                    <option value="4" selected="@(appt.ExistingRating == 4 ? "selected" : null)">⭐⭐⭐⭐ (4/5)</option>
+                                                    <option value="3" selected="@(appt.ExistingRating == 3 ? "selected" : null)">⭐⭐⭐ (3/5)</option>
+                                                    <option value="2" selected="@(appt.ExistingRating == 2 ? "selected" : null)">⭐⭐ (2/5)</option>
+                                                    <option value="1" selected="@(appt.ExistingRating == 1 ? "selected" : null)">⭐ (1/5)</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group mb-2">
+                                                <textarea name="Comment" class="form-control" placeholder="Write your review here..." rows="2" required>@appt.ExistingReviewComment</textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm w-100" style="justify-content:center;">Submit Review</button>
+                                        </form>
+                                    </div>
+                                }
                             </td>
                         </tr>
                     }

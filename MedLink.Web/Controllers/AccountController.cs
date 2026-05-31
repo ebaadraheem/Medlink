@@ -63,7 +63,7 @@ public class AccountController : Controller
         patient.StudentId = vm.StudentId;
         patient.Department = vm.Department;
         patient.Phone = vm.Phone;
-        patient.DateOfBirth = vm.DateOfBirth;
+        patient.DateOfBirth = DateTime.SpecifyKind(vm.DateOfBirth, DateTimeKind.Utc);
         patient.BloodGroup = vm.BloodGroup;
         patient.EmergencyContact = vm.EmergencyContact;
         patient.MedicalHistory = vm.MedicalHistory;

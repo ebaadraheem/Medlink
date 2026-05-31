@@ -18,7 +18,13 @@ public class DoctorListPresenter
             .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(search))
-            query = query.Where(d => d.Name.Contains(search) || d.Qualifications.Contains(search) || d.Bio.Contains(search));
+        {
+            var searchTerm = search.ToLower();
+            query = query.Where(d => 
+                (d.Name != null && d.Name.ToLower().Contains(searchTerm)) || 
+                (d.Qualifications != null && d.Qualifications.ToLower().Contains(searchTerm)) || 
+                (d.Bio != null && d.Bio.ToLower().Contains(searchTerm)));
+        }
 
         if (specialtyId.HasValue)
             query = query.Where(d => d.SpecialtyId == specialtyId.Value);

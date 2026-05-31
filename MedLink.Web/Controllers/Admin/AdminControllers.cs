@@ -114,10 +114,11 @@ public class AdminAppointmentsController : Controller
     }
 
     [HttpPost("update-status")]
-    public async Task<IActionResult> UpdateStatus(int id, string status, string? notes, string? diagnosis, string? prescription)
+    public async Task<IActionResult> UpdateStatus(int id, string status, string? notes, string? diagnosis, string? prescription, decimal? weight, decimal? height, string? bloodPressure, decimal? temperature)
     {
         if (Enum.TryParse<AppointmentStatus>(status, out var s))
-            await _presenter.UpdateStatusAsync(id, s, notes, diagnosis, prescription);
+            await _presenter.UpdateStatusAsync(id, s, notes, diagnosis, prescription, weight, height, bloodPressure, temperature);
+        
         TempData["Success"] = "Appointment updated.";
         return RedirectToAction("Detail", new { id });
     }

@@ -1,6 +1,6 @@
 using MedLink.Model.Entities;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity;
 namespace MedLink.Model.Data;
 
 public static class SeedData
@@ -9,129 +9,131 @@ public static class SeedData
     {
         if (await db.Specialties.AnyAsync()) return;
 
+        // 1. Seed Specialties
         var specialties = new List<Specialty>
         {
-            new() { Name = "General Medicine", Description = "Primary healthcare and general consultations", Icon = "fa-stethoscope" },
-            new() { Name = "Cardiology", Description = "Heart and cardiovascular system", Icon = "fa-heart-pulse" },
-            new() { Name = "Orthopedics", Description = "Bones, joints and musculoskeletal system", Icon = "fa-bone" },
-            new() { Name = "Dermatology", Description = "Skin, hair and nail conditions", Icon = "fa-microscope" },
-            new() { Name = "Psychiatry", Description = "Mental health and behavioral disorders", Icon = "fa-brain" },
-            new() { Name = "Ophthalmology", Description = "Eye care and vision health", Icon = "fa-eye" },
-            new() { Name = "Dental", Description = "Oral health and dental care", Icon = "fa-tooth" },
-            new() { Name = "Gynecology", Description = "Women's reproductive health", Icon = "fa-venus" },
+            new() { Name = "General Medicine", Description = "Primary healthcare", Icon = "fa-stethoscope" },
+            new() { Name = "Cardiology", Description = "Heart and cardiovascular", Icon = "fa-heart-pulse" },
+            new() { Name = "Orthopedics", Description = "Bones and joints", Icon = "fa-bone" },
+            new() { Name = "Dermatology", Description = "Skin, hair and nails", Icon = "fa-microscope" },
+            new() { Name = "Psychiatry", Description = "Mental health", Icon = "fa-brain" },
+            new() { Name = "Ophthalmology", Description = "Eye care", Icon = "fa-eye" }
         };
-
         await db.Specialties.AddRangeAsync(specialties);
         await db.SaveChangesAsync();
 
-        var doctors = new List<Doctor>
+        // 2. Procedurally Generate 50 Users & Patients
+        var random = new Random();
+        var dob = DateTime.SpecifyKind(new DateTime(1998, 1, 1), DateTimeKind.Utc);
+        string[] firstNames = { "Ali", "Ayesha", "Bilal", "Fatima", "Hassan", "Zainab", "Omar", "Sara", "Usman", "Mariam" };
+        string[] lastNames = { "Khan", "Ahmed", "Tariq", "Mirza", "Sheikh", "Raza", "Hussain", "Malik", "Shah", "Iqbal" };
+        
+        var users = new List<IdentityUser>();
+        var patients = new List<Patient>();
+        
+        for (int i = 1; i <= 50; i++)
         {
-            new()
+            var userId = $"user-{i}";
+            
+            // Create the Base Identity User first
+            users.Add(new IdentityUser
             {
-                Name = "Dr. Sarah Ahmed",
-                Bio = "Experienced general physician with 12 years of practice. Specializes in preventive care and chronic disease management.",
-                Qualifications = "MBBS, FCPS (Medicine)",
-                ExperienceYears = 12,
-                ConsultationFee = 500,
-                Phone = "0300-1234567",
-                Email = "sarah.ahmed@medlink.edu",
-                SpecialtyId = specialties[0].Id,
-                AverageRating = 4.8,
-                ReviewCount = 124,
-                IsAvailable = true
-            },
-            new()
-            {
-                Name = "Dr. Hassan Mirza",
-                Bio = "Board-certified cardiologist specializing in interventional cardiology and heart failure management.",
-                Qualifications = "MBBS, MD (Cardiology), FACC",
-                ExperienceYears = 18,
-                ConsultationFee = 1500,
-                Phone = "0300-2345678",
-                Email = "hassan.mirza@medlink.edu",
-                SpecialtyId = specialties[1].Id,
-                AverageRating = 4.9,
-                ReviewCount = 87,
-                IsAvailable = true
-            },
-            new()
-            {
-                Name = "Dr. Fatima Khan",
-                Bio = "Orthopedic surgeon with expertise in sports injuries and joint replacement surgery.",
-                Qualifications = "MBBS, MS (Orthopedics)",
-                ExperienceYears = 10,
-                ConsultationFee = 1200,
-                Phone = "0300-3456789",
-                Email = "fatima.khan@medlink.edu",
-                SpecialtyId = specialties[2].Id,
-                AverageRating = 4.7,
-                ReviewCount = 65,
-                IsAvailable = true
-            },
-            new()
-            {
-                Name = "Dr. Ali Raza",
-                Bio = "Dermatologist specializing in acne, eczema, and cosmetic dermatology.",
-                Qualifications = "MBBS, DDVL",
-                ExperienceYears = 8,
-                ConsultationFee = 800,
-                Phone = "0300-4567890",
-                Email = "ali.raza@medlink.edu",
-                SpecialtyId = specialties[3].Id,
-                AverageRating = 4.6,
-                ReviewCount = 93,
-                IsAvailable = true
-            },
-            new()
-            {
-                Name = "Dr. Nadia Hussain",
-                Bio = "Psychiatrist focused on student mental health, anxiety, depression and stress management.",
-                Qualifications = "MBBS, MRCPsych",
-                ExperienceYears = 9,
-                ConsultationFee = 1000,
-                Phone = "0300-5678901",
-                Email = "nadia.hussain@medlink.edu",
-                SpecialtyId = specialties[4].Id,
-                AverageRating = 4.9,
-                ReviewCount = 141,
-                IsAvailable = true
-            },
-            new()
-            {
-                Name = "Dr. Usman Sheikh",
-                Bio = "Ophthalmologist with expertise in refractive surgery, glaucoma and retinal diseases.",
-                Qualifications = "MBBS, FCPS (Ophthalmology)",
-                ExperienceYears = 14,
-                ConsultationFee = 1100,
-                Phone = "0300-6789012",
-                Email = "usman.sheikh@medlink.edu",
-                SpecialtyId = specialties[5].Id,
-                AverageRating = 4.7,
-                ReviewCount = 58,
-                IsAvailable = true
-            },
-        };
+                Id = userId,
+                UserName = $"student{i}@medlink.edu",
+                NormalizedUserName = $"STUDENT{i}@MEDLINK.EDU",
+                Email = $"student{i}@medlink.edu",
+                NormalizedEmail = $"STUDENT{i}@MEDLINK.EDU",
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString()
+            });
 
+            // Create the linked Patient Profile
+            patients.Add(new Patient
+            {
+                UserId = userId,
+                FullName = $"{firstNames[random.Next(firstNames.Length)]} {lastNames[random.Next(lastNames.Length)]}",
+                StudentId = $"STU-{1000 + i}",
+                Department = "General Science",
+                Phone = $"0300{random.Next(1000000, 9999999)}",
+                DateOfBirth = dob.AddDays(random.Next(1, 3000))
+            });
+        }
+        
+        // Save Users first to satisfy the Foreign Key constraint
+        await db.Users.AddRangeAsync(users);
+        await db.SaveChangesAsync();
+        
+        // Then save the Patients
+        await db.Patients.AddRangeAsync(patients);
+        await db.SaveChangesAsync();
+
+        // 3. Generate 18 Doctors (3 per Specialty)
+        var doctors = new List<Doctor>();
+        string[] docFirstNames = { "Kamran", "Sadia", "Faisal", "Nida", "Tariq", "Hira" };
+        
+        foreach (var spec in specialties)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                doctors.Add(new Doctor
+                {
+                    Name = $"Dr. {docFirstNames[random.Next(docFirstNames.Length)]} {lastNames[random.Next(lastNames.Length)]}",
+                    Bio = $"Highly experienced specialist in {spec.Name}.",
+                    Qualifications = "MBBS, FCPS",
+                    ExperienceYears = random.Next(5, 25),
+                    ConsultationFee = random.Next(5, 20) * 100, // Rs. 500 to 2000
+                    SpecialtyId = spec.Id,
+                    IsAvailable = true
+                });
+            }
+        }
         await db.Doctors.AddRangeAsync(doctors);
         await db.SaveChangesAsync();
 
-        // Seed time slots for each doctor (Mon-Fri, morning and afternoon)
+        // 4. Generate Hundreds of Reviews & Sync Math
+        var reviews = new List<DoctorReview>();
+        string[] comments = { 
+            "Incredible doctor, highly recommended!", "Very professional.", "Took the time to listen to me.", 
+            "Wait was long but the doctor was great.", "Solved my issue immediately.", "Best doctor on campus!" 
+        };
+
+        foreach (var doc in doctors)
+        {
+            int numOfReviews = random.Next(15, 40); // 15 to 40 reviews per doctor
+            int totalStars = 0;
+
+            for (int i = 0; i < numOfReviews; i++)
+            {
+                int rating = random.Next(3, 6); // 3 to 5 stars
+                totalStars += rating;
+
+                reviews.Add(new DoctorReview
+                {
+                    DoctorId = doc.Id,
+                    PatientId = patients[random.Next(patients.Count)].Id,
+                    Rating = rating,
+                    Comment = comments[random.Next(comments.Length)],
+                    IsVerified = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 100))
+                });
+            }
+            doc.ReviewCount = numOfReviews;
+            doc.AverageRating = Math.Round((double)totalStars / numOfReviews, 1);
+        }
+
+        db.Doctors.UpdateRange(doctors);
+        await db.DoctorReviews.AddRangeAsync(reviews);
+        
+        // 5. Generate TimeSlots
         var slots = new List<TimeSlot>();
-        foreach (var doctor in doctors)
+        foreach (var doc in doctors)
         {
             foreach (var day in new[] { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday })
             {
-                // Morning slots: 9AM, 10AM, 11AM
-                slots.Add(new TimeSlot { DoctorId = doctor.Id, DayOfWeek = day, StartTime = new TimeSpan(9, 0, 0), EndTime = new TimeSpan(9, 30, 0) });
-                slots.Add(new TimeSlot { DoctorId = doctor.Id, DayOfWeek = day, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(10, 30, 0) });
-                slots.Add(new TimeSlot { DoctorId = doctor.Id, DayOfWeek = day, StartTime = new TimeSpan(11, 0, 0), EndTime = new TimeSpan(11, 30, 0) });
-                // Afternoon slots: 2PM, 3PM, 4PM
-                slots.Add(new TimeSlot { DoctorId = doctor.Id, DayOfWeek = day, StartTime = new TimeSpan(14, 0, 0), EndTime = new TimeSpan(14, 30, 0) });
-                slots.Add(new TimeSlot { DoctorId = doctor.Id, DayOfWeek = day, StartTime = new TimeSpan(15, 0, 0), EndTime = new TimeSpan(15, 30, 0) });
-                slots.Add(new TimeSlot { DoctorId = doctor.Id, DayOfWeek = day, StartTime = new TimeSpan(16, 0, 0), EndTime = new TimeSpan(16, 30, 0) });
+                slots.Add(new TimeSlot { DoctorId = doc.Id, DayOfWeek = day, StartTime = new TimeSpan(9, 0, 0), EndTime = new TimeSpan(9, 30, 0) });
+                slots.Add(new TimeSlot { DoctorId = doc.Id, DayOfWeek = day, StartTime = new TimeSpan(10, 0, 0), EndTime = new TimeSpan(10, 30, 0) });
             }
         }
-
         await db.TimeSlots.AddRangeAsync(slots);
         await db.SaveChangesAsync();
     }

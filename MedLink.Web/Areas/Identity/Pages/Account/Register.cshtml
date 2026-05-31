@@ -1,5 +1,5 @@
 @page
-@model RegisterModel
+@model MedLink.Web.Areas.Identity.Pages.Account.RegisterModel
 @{
     ViewData["Title"] = "Create Account";
     Layout = null;
@@ -62,7 +62,7 @@
         .back-to-site:hover { color:var(--teal-700); }
         .password-strength { height:4px; border-radius:2px; background:var(--stone); margin-top:.4rem; overflow:hidden; }
         .password-strength-bar { height:100%; border-radius:2px; transition:width .3s, background .3s; width:0; background:var(--teal-500); }
-        @media (max-width:768px) { .auth-wrap { grid-template-columns:1fr; } .auth-panel { display:none; } }
+        @@media (max-width:768px) { .auth-wrap { grid-template-columns:1fr; } .auth-panel { display:none; } }
     </style>
 </head>
 <body>

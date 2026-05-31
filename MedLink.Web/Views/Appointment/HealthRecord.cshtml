@@ -38,7 +38,9 @@
 
         <div class="mb-4">
             <h4 class="text-teal mb-2">Prescription</h4>
-            <div style="background: var(--ivory-dk); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; white-space: pre-wrap; font-family: var(--font-mono);">
+            <div style="background: var(--ivory-dk); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem; white-space: pre-wrap; font-family: var(--font-mono); text-align: left;">
+                @Model.Prescription
+            </div>
         </div>
 
         @if (!string.IsNullOrEmpty(Model.DoctorNotes))

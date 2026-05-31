@@ -15,7 +15,11 @@ public static class DependencyInjection
             ?? throw new InvalidOperationException("Connection string not found.");
 
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        {
+            options.UseNpgsql(connectionString);
+            options.ConfigureWarnings(warnings => 
+                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        });
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IPatientRepository, PatientRepository>();

@@ -41,7 +41,7 @@ public class AdminAppointmentPresenter
             }).ToListAsync();
     }
 
-    public async Task UpdateStatusAsync(int id, AppointmentStatus status, string? notes, string? diagnosis, string? prescription)
+    public async Task UpdateStatusAsync(int id, AppointmentStatus status, string? notes, string? diagnosis, string? prescription, decimal? weight, decimal? height, string? bp, decimal? temp)
     {
         var appt = await _db.Appointments.FindAsync(id);
         if (appt == null) return;
@@ -51,11 +51,11 @@ public class AdminAppointmentPresenter
         if (prescription != null) appt.Prescription = prescription;
         appt.UpdatedAt = DateTime.UtcNow;
 
-        // Auto-create health record when completing
+        // Auto-create or Update health record when completing
         if (status == AppointmentStatus.Completed && !string.IsNullOrEmpty(diagnosis))
         {
-            var exists = await _db.HealthRecords.AnyAsync(h => h.AppointmentId == id);
-            if (!exists)
+            var record = await _db.HealthRecords.FirstOrDefaultAsync(h => h.AppointmentId == id);
+            if (record == null)
             {
                 await _db.HealthRecords.AddAsync(new HealthRecord
                 {
@@ -64,8 +64,22 @@ public class AdminAppointmentPresenter
                     Diagnosis = diagnosis ?? "",
                     Prescription = prescription ?? "",
                     DoctorNotes = notes ?? "",
-                    VisitDate = appt.AppointmentDate
+                    VisitDate = appt.AppointmentDate,
+                    Weight = weight,
+                    Height = height,
+                    BloodPressure = bp,
+                    Temperature = temp
                 });
+            }
+            else
+            {
+                record.Diagnosis = diagnosis ?? "";
+                record.Prescription = prescription ?? "";
+                record.DoctorNotes = notes ?? "";
+                record.Weight = weight;
+                record.Height = height;
+                record.BloodPressure = bp;
+                record.Temperature = temp;
             }
         }
         await _db.SaveChangesAsync();
@@ -96,7 +110,11 @@ public class AdminAppointmentPresenter
                 Fee = a.Fee,
                 IsPaid = a.IsPaid,
                 HasHealthRecord = a.HealthRecord != null,
-                HealthRecordId = a.HealthRecord != null ? a.HealthRecord.Id : null
+                HealthRecordId = a.HealthRecord != null ? a.HealthRecord.Id : null,
+                Weight = a.HealthRecord != null ? a.HealthRecord.Weight : null,
+                Height = a.HealthRecord != null ? a.HealthRecord.Height : null,
+                BloodPressure = a.HealthRecord != null ? a.HealthRecord.BloodPressure : null,
+                Temperature = a.HealthRecord != null ? a.HealthRecord.Temperature : null
             }).FirstOrDefaultAsync();
     }
 }

@@ -69,6 +69,14 @@ public class BookAppointmentViewModel
 public class AppointmentViewModel
 {
     public int Id { get; set; }
+    public int DoctorId { get; set; }
+    public int? ExistingRating { get; set; }
+    public decimal? Weight { get; set; }
+    public decimal? Height { get; set; }
+    public string? BloodPressure { get; set; }
+    public decimal? Temperature { get; set; }
+    public string? ExistingReviewComment { get; set; }
+    public bool HasReviewed => ExistingRating.HasValue && ExistingRating.Value > 0;
     public string AppointmentNumber { get; set; } = string.Empty;
     public string DoctorName { get; set; } = string.Empty;
     public string DoctorSpecialty { get; set; } = string.Empty;
