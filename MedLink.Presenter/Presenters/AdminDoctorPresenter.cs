@@ -46,10 +46,20 @@ public class AdminDoctorPresenter
     {
         var doctor = new Doctor
         {
-            Name = vm.Name, Bio = vm.Bio, Qualifications = vm.Qualifications,
-            ExperienceYears = vm.ExperienceYears, ConsultationFee = vm.ConsultationFee,
-            Phone = vm.Phone, Email = vm.Email, SpecialtyId = vm.SpecialtyId, IsAvailable = vm.IsAvailable,
-            PhotoData = photo, PhotoContentType = contentType
+            Name = vm.Name, 
+            Bio = vm.Bio, 
+            Qualifications = vm.Qualifications,
+            ExperienceYears = vm.ExperienceYears, 
+            ConsultationFee = vm.ConsultationFee,
+            
+            // ADD ?? "" HERE to prevent the database crash
+            Phone = vm.Phone ?? "", 
+            Email = vm.Email ?? "", 
+            
+            SpecialtyId = vm.SpecialtyId, 
+            IsAvailable = vm.IsAvailable,
+            PhotoData = photo, 
+            PhotoContentType = contentType
         };
         await _db.Doctors.AddAsync(doctor);
 
@@ -68,11 +78,25 @@ public class AdminDoctorPresenter
     public async Task UpdateAsync(AdminDoctorViewModel vm, byte[]? photo, string? contentType)
     {
         var doctor = await _db.Doctors.FindAsync(vm.Id) ?? throw new KeyNotFoundException();
-        doctor.Name = vm.Name; doctor.Bio = vm.Bio; doctor.Qualifications = vm.Qualifications;
-        doctor.ExperienceYears = vm.ExperienceYears; doctor.ConsultationFee = vm.ConsultationFee;
-        doctor.Phone = vm.Phone; doctor.Email = vm.Email; doctor.SpecialtyId = vm.SpecialtyId;
-        doctor.IsAvailable = vm.IsAvailable; doctor.UpdatedAt = DateTime.UtcNow;
-        if (photo != null) { doctor.PhotoData = photo; doctor.PhotoContentType = contentType; }
+        doctor.Name = vm.Name; 
+        doctor.Bio = vm.Bio; 
+        doctor.Qualifications = vm.Qualifications;
+        doctor.ExperienceYears = vm.ExperienceYears; 
+        doctor.ConsultationFee = vm.ConsultationFee;
+        
+        // ADD ?? "" HERE as well
+        doctor.Phone = vm.Phone ?? ""; 
+        doctor.Email = vm.Email ?? ""; 
+        
+        doctor.SpecialtyId = vm.SpecialtyId;
+        doctor.IsAvailable = vm.IsAvailable; 
+        doctor.UpdatedAt = DateTime.UtcNow;
+        
+        if (photo != null) 
+        { 
+            doctor.PhotoData = photo; 
+            doctor.PhotoContentType = contentType; 
+        }
         await _db.SaveChangesAsync();
     }
 

@@ -73,6 +73,7 @@ public class DoctorListPresenter
             .Include(d => d.TimeSlots)
             .Include(d => d.Reviews)
                 .ThenInclude(r => r.Patient)
+            .AsSplitQuery() // <--- ADD THIS EXACT LINE HERE!
             .FirstOrDefaultAsync(d => d.Id == doctorId);
 
         if (doctor == null) return null;

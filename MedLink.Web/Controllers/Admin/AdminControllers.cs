@@ -29,7 +29,11 @@ public class AdminDoctorsController : Controller
 
     [HttpGet("")]
     public async Task<IActionResult> Index() => View(await _presenter.GetAllAsync());
-
+    [HttpGet("edit/{id}")]
+    public async Task<IActionResult> Edit(int id) 
+    {
+        return View(await _presenter.GetForEditAsync(id));
+    }
     [HttpGet("create")]
     public async Task<IActionResult> Create()
     {
@@ -38,46 +42,73 @@ public class AdminDoctorsController : Controller
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> Create(AdminDoctorViewModel vm, IFormFile? photo)
+    public async Task<IActionResult> Create(AdminDoctorViewModel vm)
     {
+        // FORCE the system to ignore validation on these fields
+        ModelState.Remove("Specialties"); 
+        ModelState.Remove("PhotoUpload");
+        if (string.IsNullOrEmpty(vm.Phone)) ModelState.Remove("Phone");
+        if (string.IsNullOrEmpty(vm.Email)) ModelState.Remove("Email");
+
         if (!ModelState.IsValid)
         {
+            // If it fails, reload the dropdowns and show the form again
             vm.Specialties = await _presenter.GetSpecialtyListAsync();
             return View(vm);
         }
+
         byte[]? photoData = null;
         string? contentType = null;
-        if (photo != null && photo.Length > 0)
+        
+        // Grab the file directly from the raw HTML form
+        var uploadedFile = Request.Form.Files.FirstOrDefault();
+        
+        if (uploadedFile != null && uploadedFile.Length > 0)
         {
             using var ms = new MemoryStream();
-            await photo.CopyToAsync(ms);
+            await uploadedFile.CopyToAsync(ms);
             photoData = ms.ToArray();
-            contentType = photo.ContentType;
+            contentType = uploadedFile.ContentType;
         }
+
         await _presenter.CreateAsync(vm, photoData, contentType);
         TempData["Success"] = "Doctor added successfully.";
         return RedirectToAction("Index");
     }
 
-    [HttpGet("edit/{id}")]
-    public async Task<IActionResult> Edit(int id) => View(await _presenter.GetForEditAsync(id));
-
     [HttpPost("edit/{id}")]
-    public async Task<IActionResult> Edit(AdminDoctorViewModel vm, IFormFile? photo)
+    public async Task<IActionResult> Edit(int id, AdminDoctorViewModel vm) 
     {
+        vm.Id = id; 
+        
+        // FORCE the system to ignore validation on these fields
+        ModelState.Remove("Specialties"); 
+        ModelState.Remove("PhotoUpload");
+        if (string.IsNullOrEmpty(vm.Phone)) ModelState.Remove("Phone");
+        if (string.IsNullOrEmpty(vm.Email)) ModelState.Remove("Email");
+
         if (!ModelState.IsValid)
         {
+            // If it still fails, it's because a Required field like Name or Bio is empty
             vm.Specialties = await _presenter.GetSpecialtyListAsync();
             return View(vm);
         }
-        byte[]? photoData = null; string? contentType = null;
-        if (photo != null && photo.Length > 0)
+        
+        byte[]? photoData = null; 
+        string? contentType = null;
+        
+        var uploadedFile = Request.Form.Files.FirstOrDefault();
+        if (uploadedFile != null && uploadedFile.Length > 0)
         {
             using var ms = new MemoryStream();
-            await photo.CopyToAsync(ms);
-            photoData = ms.ToArray(); contentType = photo.ContentType;
+            await uploadedFile.CopyToAsync(ms);
+            photoData = ms.ToArray(); 
+            contentType = uploadedFile.ContentType;
         }
+        
+        // This is where the database actually gets updated!
         await _presenter.UpdateAsync(vm, photoData, contentType);
+        
         TempData["Success"] = "Doctor updated.";
         return RedirectToAction("Index");
     }

@@ -8,7 +8,8 @@ public class ImageController : Controller
 {
     private readonly AppDbContext _db;
     public ImageController(AppDbContext db) => _db = db;
-
+    
+    [Route("Image/Doctor/{id}")]
     public async Task<IActionResult> Doctor(int id)
     {
         var doctor = await _db.Doctors.Where(d => d.Id == id).Select(d => new { d.PhotoData, d.PhotoContentType }).FirstOrDefaultAsync();

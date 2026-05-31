@@ -1,6 +1,6 @@
 using MedLink.Model.Enums;
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Http;
 namespace MedLink.Presenter.ViewModels;
 
 // ─── Specialty ───────────────────────────────────────────────────────────────
@@ -196,4 +196,5 @@ public class AdminDoctorViewModel
     public int SpecialtyId { get; set; }
     public bool IsAvailable { get; set; } = true;
     public List<SpecialtyViewModel> Specialties { get; set; } = new();
+    public IFormFile? PhotoUpload { get; set; }
 }
