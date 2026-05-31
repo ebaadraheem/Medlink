@@ -95,7 +95,7 @@ a { color: var(--teal-700); text-decoration: none; transition: color .2s; }
 a:hover { color: var(--teal-500); }
 
 .mono { font-family: var(--font-mono); }
-.display { font-family: var(--font-display); }
+.display { font-family: var(--font-display); margin-left: 0.60rem; margin-right: 0.60rem; }
 
 /* ── Layout ───────────────────────────────────────────── */
 .container { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
@@ -467,8 +467,9 @@ select.form-control {
   font-size: .78rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: .1em;
   color: var(--teal-600); margin-bottom: .75rem;
+  margin-left: 0.60rem;
 }
-.section-title { margin-bottom: 1rem; }
+.section-title { margin-bottom: 1rem; margin-left: 0.60rem;}
 .section-desc { max-width: 560px; }
 
 /* ── Specialty Cards ─────────────────────────────────── */
@@ -833,10 +834,13 @@ body.identity-page { background: var(--ivory); }
     margin-top: 2rem;
   }
 
+  
   /* ── Specialty grid ── */
   .specialty-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: .75rem;
+    margin-left: 0.60rem;
+    margin-right: 0.60rem;
   }
 
   /* ── Section spacing ── */
@@ -981,6 +985,9 @@ body.identity-page { background: var(--ivory); }
   /* ── Specialty grid → single col on very small phones ── */
   .specialty-grid {
     grid-template-columns: 1fr 1fr;
+    
+    margin-left: 0.60rem;
+    margin-right: 0.60rem;
   }
 
   /* ── Hero stat numbers ── */

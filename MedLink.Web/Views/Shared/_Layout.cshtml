@@ -49,18 +49,26 @@
             <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
         </div>
         <div class="mobile-menu">
-            <a asp-controller="Home" asp-action="Index">Home</a>
-            <a asp-controller="Home" asp-action="Doctors">Find a Doctor</a>
-            @if (User.Identity?.IsAuthenticated ?? false)
-            {
-                <a asp-controller="Appointment" asp-action="Index">My Appointments</a>
-                <a asp-controller="Account" asp-action="Profile">Profile</a>
-            }
-            else
-            {
-                <a href="/Identity/Account/Login">Login</a>
-            }
-        </div>
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Home" asp-action="Doctors">Find a Doctor</a>
+        
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <a asp-controller="Appointment" asp-action="Index">My Appointments</a>
+            <a asp-controller="Account" asp-action="Profile">Profile</a>
+            
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post">
+                <button type="submit" class="btn btn-ghost" style="color:var(--accent-coral); width: 100%; text-align: left; padding: 10px 20px;">
+                    Sign Out
+                </button>
+            </form>
+        }
+        else
+        {
+            <a href="/Identity/Account/Login">Login</a>
+            <a href="/Identity/Account/Register">Sign Up</a>
+        }
+    </div>
     </nav>
 
     <main role="main">
