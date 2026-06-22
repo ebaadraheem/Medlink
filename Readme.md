@@ -413,3 +413,8 @@ This project was developed as a university semester project, structurally derive
 - Student ID field in registration
 - Admin appointment detail with inline vitals entry and automatic health record creation
 - Full custom design system replacing Bootstrap
+
+
+License
+
+This project is licensed under MIT.
