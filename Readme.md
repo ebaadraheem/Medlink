@@ -1,4 +1,4 @@
-# MedLink — University Health Portal
+# MedLink — University Health Portal (6th semester project)
 
 > A full-stack web application for university students to book appointments with campus doctors, manage health records, and interact with a clinic administration panel.
 
